@@ -1,22 +1,29 @@
-# Karl Sorochinski Personal Website
+# Karl Sorochinski - Personal Website
 
-A modern, dynamic personal website built with Next.js, Chakra UI, and a microservices backend architecture. This project features a micro-frontend approach allowing for dynamic content updates without page refreshes.
+A modern, dynamic personal website built with Next.js, Chakra UI, and a Node.js backend. This project showcases my professional experience as a Transformational IT Leader with expertise in organizational transformation, system design, and technology leadership.
 
-## 🚀 Features
+## 🌟 Features
 
 ### Frontend (Next.js + Chakra UI)
 - **Responsive Design**: Mobile-first approach with beautiful UI components
-- **Micro-Frontend Architecture**: Dynamic component loading for seamless updates
 - **Modern UI**: Built with Chakra UI for consistent design system
 - **TypeScript**: Full type safety throughout the application
 - **SEO Optimized**: Built-in SEO features with Next.js
 - **Performance**: Optimized for fast loading and smooth interactions
+- **Markdown Support**: Policy pages render markdown content with proper formatting
 
 ### Backend (Node.js + Express + MongoDB)
 - **RESTful API**: Clean, well-documented API endpoints
 - **Microservices Ready**: Designed for easy expansion with additional services
 - **Security**: Rate limiting, CORS, helmet, and input validation
 - **Database**: MongoDB with Mongoose ODM
+- **Contact Form**: Functional contact form with email service integration
+
+## 🚀 Live Demo
+
+- **Website**: [Your live website URL here]
+- **GitHub**: [https://github.com/karlsoro](https://github.com/karlsoro)
+- **LinkedIn**: [https://www.linkedin.com/in/karl-sorochinski-0893402/](https://www.linkedin.com/in/karl-sorochinski-0893402/)
 
 ## 📁 Project Structure
 
@@ -25,15 +32,16 @@ personal-website/
 ├── frontend/                 # Next.js frontend application
 │   ├── src/
 │   │   ├── app/             # Next.js app directory
+│   │   │   ├── privacy/     # Privacy policy page
+│   │   │   ├── cookies/     # Cookies policy page
+│   │   │   ├── terms/       # Terms of use page
+│   │   │   └── ...
 │   │   ├── components/      # React components
 │   │   │   ├── layout/      # Layout components (Header, Footer, etc.)
 │   │   │   ├── features/    # Feature components (Hero, About, Projects, etc.)
-│   │   │   └── shared/      # Shared components (DynamicComponent, etc.)
-│   │   ├── hooks/           # Custom React hooks
-│   │   ├── services/        # API services
-│   │   ├── types/           # TypeScript type definitions
-│   │   └── utils/           # Utility functions
-│   └── public/              # Static assets
+│   │   │   └── shared/      # Shared components
+│   │   └── ...
+│   └── public/              # Static assets and markdown files
 ├── backend/                  # Node.js backend application
 │   ├── src/
 │   │   ├── config/          # Configuration files
@@ -43,18 +51,19 @@ personal-website/
 │   │   ├── routes/          # API routes
 │   │   ├── services/        # Business logic services
 │   │   └── utils/           # Utility functions
-│   └── dist/                # Compiled TypeScript output
+│   ├── PrivacyPolicy.md     # Privacy policy content
+│   ├── CookiePolicy.md      # Cookie policy content
+│   └── TermsofUse.md        # Terms of use content
 └── README.md               # This file
 ```
 
 ## 🛠️ Technology Stack
 
 ### Frontend
-- **Next.js 14**: React framework with App Router
+- **Next.js 15**: React framework with App Router
 - **Chakra UI**: Component library for consistent design
 - **TypeScript**: Type-safe JavaScript
-- **React Query**: Data fetching and caching
-- **Axios**: HTTP client for API calls
+- **React Markdown**: Markdown rendering for policy pages
 - **React Icons**: Icon library
 
 ### Backend
@@ -63,7 +72,6 @@ personal-website/
 - **TypeScript**: Type-safe JavaScript
 - **MongoDB**: NoSQL database
 - **Mongoose**: MongoDB ODM
-- **JWT**: Authentication tokens
 - **Express Validator**: Input validation
 - **Helmet**: Security middleware
 - **Morgan**: HTTP request logger
@@ -145,47 +153,49 @@ The API will be available at [http://localhost:3001](http://localhost:3001)
 - `GET /api/blog` - Get all blog posts
 - `GET /api/blog/:id` - Get single blog post
 
+## 🎯 Key Features
 
+### Professional Profile
+- **Transformational IT Leader** positioning
+- **Organizational Transformation** expertise
+- **End-to-End System Design** capabilities
+- **Data, Analytics and AI** focus
+- **Connecting Delivery to Value** approach
 
-## 🏗️ Micro-Frontend Architecture
+### Projects Showcase
+- **SOA to Microservices Transformation** case study
+- **Weather Consensus App** tutorial series
+- **Task Management App** collaboration features
+- **Blog Platform** with markdown support
 
-The frontend implements a micro-frontend architecture using dynamic component loading:
-
-```typescript
-// Example of dynamic component loading
-<DynamicComponent 
-  componentName="Hero" 
-  props={{ title: "Welcome" }}
-/>
-```
-
-This allows for:
-- **Dynamic Updates**: Components can be updated without full page reloads
-- **Modular Development**: Each feature is developed independently
-- **Scalability**: Easy to add new features and components
-- **Performance**: Only load components when needed
+### Contact & Legal
+- **Functional contact form** with validation
+- **Privacy Policy** with markdown rendering
+- **Terms of Use** with markdown rendering
+- **Cookies Policy** with markdown rendering
+- **Social media integration** (LinkedIn, GitHub, Twitter)
 
 ## 🚀 Deployment
 
-### Frontend (GoDaddy)
+### Frontend (Vercel/Netlify)
 1. Build the production version:
 ```bash
 cd frontend
 npm run build
 ```
 
-2. Deploy the `out` directory to your GoDaddy web server
+2. Deploy to your preferred platform
 
-### Backend (Azure)
+### Backend (Azure/Heroku)
 1. Build the backend:
 ```bash
 cd backend
 npm run build
 ```
 
-2. Deploy to Azure App Service or Azure Functions
+2. Deploy to your preferred platform
 
-3. Configure environment variables in Azure
+3. Configure environment variables
 
 ## 🔧 Development Scripts
 
@@ -199,33 +209,20 @@ npm run build
 - `npm run dev` - Start development server with nodemon
 - `npm run build` - Compile TypeScript
 - `npm run start` - Start production server
-- `npm run test` - Run tests
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
 
 ## 📝 License
 
 This project is licensed under the MIT License.
 
-## 🆘 Support
+## 🤝 Contributing
 
-For support, email your.email@example.com or create an issue in the repository.
+This is a personal website project, but suggestions and feedback are welcome!
 
-## 🔮 Future Enhancements
+## 📞 Contact
 
-- [ ] Blog system with markdown support
-- [ ] Admin dashboard for content management
-- [ ] Real-time notifications
-- [ ] Analytics integration
-- [ ] PWA features
-- [ ] Multi-language support
-- [ ] Dark mode toggle
-- [ ] Advanced SEO features
-- [ ] Image optimization
-- [ ] CDN integration
+- **Email**: karl@sorochinski.com
+- **Phone**: (732) 501-7596
+- **Location**: Pike County, PA
+- **LinkedIn**: [Karl Sorochinski](https://www.linkedin.com/in/karl-sorochinski-0893402/)
+- **GitHub**: [karlsoro](https://github.com/karlsoro)
+- **Twitter**: [@KarlSoro1965](https://twitter.com/KarlSoro1965)
