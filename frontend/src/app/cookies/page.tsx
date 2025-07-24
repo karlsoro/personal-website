@@ -15,8 +15,8 @@ export default function CookiePolicy() {
         setContent(text)
         setLoading(false)
       })
-      .catch(error => {
-        console.error('Error loading cookie policy:', error)
+      .catch(() => {
+        // console.error('Error loading cookie policy:', error)
         setLoading(false)
       })
   }, [])

@@ -6,14 +6,11 @@ import {
   Stack,
   Text,
   Heading,
-  Button,
   Image,
   Flex,
-  Icon,
   IconButton,
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 
 export default function Hero() {
   return (
@@ -48,7 +45,7 @@ export default function Hero() {
               textAlign={{ base: 'center', md: 'left' }}
             >
               <Text as={'span'} color={'brand.500'}>
-                Hi, I'm Karl
+                Hi, I&apos;m Karl
               </Text>
               <br />
               <Text as={'span'} color={'gray.700'}>
@@ -56,7 +53,7 @@ export default function Hero() {
               </Text>
             </Heading>
             <Text color={'gray.600'} fontSize={{ base: 'md', sm: 'lg' }} textAlign={{ base: 'center', md: 'left' }}>
-              I lead technology transformations and build modern, scalable solutions that drive business growth and innovation.
+              I lead enterprise-wide technology transformations, designing and implementing AI, machine learning, and deep learning solutions that deliver tangible business value. By architecting modern, scalable platforms, I drive measurable growth, operational efficiency, and innovation, aligning cutting-edge AI/ML/DL capabilities with strategic business objectives to create impactful, data-driven outcomes.
             </Text>
             {/* Social Buttons and CTA can remain here */}
           </Stack>

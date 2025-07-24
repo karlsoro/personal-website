@@ -122,7 +122,7 @@ export default function Contact() {
       if (response.ok) {
         toast({
           title: 'Message sent successfully!',
-          description: 'Thank you for reaching out. I\'ll get back to you soon.',
+          description: "Thank you for reaching out. I'll get back to you soon.",
           status: 'success',
           duration: 5000,
           isClosable: true,
@@ -136,7 +136,7 @@ export default function Contact() {
           message: ''
         })
       } else {
-        console.error('Contact form error:', responseData)
+        // console.error('Contact form error:', responseData)
         const errorMessage = responseData.errors?.[0]?.msg || responseData.message || 'Failed to send message'
         toast({
           title: 'Error sending message',
@@ -146,8 +146,8 @@ export default function Contact() {
           isClosable: true,
         })
       }
-    } catch (error) {
-      console.error('Contact form network error:', error)
+    } catch {
+      // console.error('Contact form network error:', error)
       toast({
         title: 'Error sending message',
         description: 'Please try again later or contact me directly via email.',
@@ -175,8 +175,8 @@ export default function Contact() {
             </Text>
           </Heading>
           <Text color={'gray.500'} maxW={'3xl'} mx={'auto'} fontSize={'lg'}>
-            I'm always interested in hearing about new opportunities and exciting projects. 
-            Feel free to reach out if you'd like to collaborate or just want to say hello!
+            I&apos;m always interested in hearing about new opportunities and exciting projects. 
+            Feel free to reach out if you&apos;d like to collaborate or just want to say hello!
           </Text>
         </Stack>
 
@@ -304,7 +304,7 @@ export default function Contact() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    placeholder="What's this about?"
+                    placeholder="What&apos;s this about?"
                     size="lg"
                   />
                   <FormErrorMessage>{errors.subject}</FormErrorMessage>

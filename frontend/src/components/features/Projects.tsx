@@ -75,7 +75,7 @@ export default function Projects() {
             </Text>
           </Heading>
           <Text color={'gray.500'} maxW={'3xl'} mx={'auto'} fontSize={'lg'}>
-            Here are some of the projects I've worked on. Each one represents a unique 
+            Here are some of the projects I&apos;ve worked on. Each one represents a unique 
             challenge and learning experience in my journey as a developer.
           </Text>
         </Stack>

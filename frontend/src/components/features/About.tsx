@@ -10,10 +10,8 @@ import {
   Badge,
   Flex,
   Icon,
-  VStack,
-  HStack,
 } from '@chakra-ui/react'
-import { FaReact, FaNodeJs, FaDatabase, FaCloud, FaCode, FaTools, FaUsers } from 'react-icons/fa'
+import { FaNodeJs, FaDatabase, FaCloud, FaCode, FaTools, FaUsers } from 'react-icons/fa'
 
 interface FeatureProps {
   title: string
@@ -82,13 +80,7 @@ export default function About() {
             </Text>
           </Heading>
           <Text color={'gray.500'} maxW={'3xl'} mx={'auto'} fontSize={'lg'}>
-          With more than four decades leading enterprise technology, 
-          nearly three inside of a Fortune 100 giant, 
-          I’ve had the chance to guide large-scale transformation across HR, Finance, Data & Analytics, 
-          Corprorate Functions, Engineering and more. 
-          Whether the challenge is modernizing legacy systems, driving platform consolidation, or designing 
-          real-time data flows that actually serve the business, 
-          I’ve been there — and built teams that delivered.
+          As a seasoned IT executive with over four decades of experience, I have spearhead enterprise-wide technology transformations that empower Fortune 500 organizations to achieve strategic objectives through value-driven data. My leadership focuses on architecting and implementing modern, scalable, and resilient solutions that integrate advanced analytics, AI, and cloud-native technologies to accelerate business growth, optimize operational efficiency, and foster innovation. By aligning cutting-edge technical capabilities, organizational priorities, and skilled staff, I drive measurable business outcomes, cultivate cross-functional collaboration, and position companies to thrive in dynamic, competitive business environments.
           </Text>
         </Stack>
 

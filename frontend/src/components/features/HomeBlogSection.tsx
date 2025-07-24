@@ -9,7 +9,6 @@ import {
   Stack,
   Image,
   Button,
-  VStack,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
@@ -18,14 +17,12 @@ interface BlogPost {
   title: string;
   subtitle: string;
   summaryBody: string;
-  update?: string;
-  update2025?: string;
   detail: string;
   date: string;
   createdAt: string;
 }
 
-export default function Blog({ posts }: { posts: BlogPost[] }) {
+export default function HomeBlogSection({ posts }: { posts: BlogPost[] }) {
   return (
     <Box py={20} bg="gray.50">
       <Container maxW={'7xl'}>
@@ -35,13 +32,13 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
             fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
             lineHeight={'110%'}
           >
-            All{' '}
+            Latest{' '}
             <Text as={'span'} color={'brand.500'}>
               Blog Posts
             </Text>
           </Heading>
           <Text color={'gray.500'} maxW={'3xl'} mx={'auto'} fontSize={'lg'}>
-            Browse all my blog posts, sorted from newest to oldest.
+            Read my latest thoughts and insights on software, tech, and more.
           </Text>
         </Stack>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
@@ -69,38 +66,33 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
                 <Heading size="md" mb={2}>
                   {post.title}
                 </Heading>
-                <VStack align="start" spacing={2} mb={4}>
-                  <Box>
-                    <Text as="span" fontWeight="bold">Summary: </Text>
-                    <Text as="span">{post.summaryBody}</Text>
-                  </Box>
-                  {post.update && (
-                    <Box>
-                      <Text as="span" fontWeight="bold">Update: </Text>
-                      <Text as="span">{post.update}</Text>
-                    </Box>
-                  )}
-                  {post.update2025 && (
-                    <Box>
-                      <Text as="span" fontWeight="bold">Update 2025: </Text>
-                      <Text as="span">{post.update2025}</Text>
-                    </Box>
-                  )}
-                </VStack>
+                <Text color={'gray.600'} mb={4}>
+                  {post.summaryBody.length > 200 ? post.summaryBody.slice(0, 200) + '...' : post.summaryBody}
+                </Text>
                 <Button
                   as={Link}
                   href={`/blog/${post._id}`}
                   size="sm"
                   colorScheme="brand"
-                  variant="solid"
+                  variant="ghost"
                   _hover={{ bg: 'brand.50' }}
                 >
-                  View Detail
+                  Read More
                 </Button>
               </Box>
             </Box>
           ))}
         </SimpleGrid>
+        <Box textAlign="center" mt={12}>
+          <Button
+            size="lg"
+            colorScheme="brand"
+            as={Link}
+            href="/blog"
+          >
+            View All Blog Posts
+          </Button>
+        </Box>
       </Container>
     </Box>
   );

@@ -11,8 +11,6 @@ import {
 import { FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa'
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
-  
   return (
     <Box
       bg="gray.50"
@@ -30,7 +28,7 @@ export default function Footer() {
         justify={{ md: 'space-between' }}
         align={{ md: 'center' }}
       >
-        <Text>© {currentYear} Karl Sorochinski. All rights reserved</Text>
+        <Text>© 2024 Karl Sorochinski. All rights reserved</Text>
         
         <Stack direction={'row'} spacing={6} align="center">
           <Link href="/privacy" _hover={{ textDecoration: 'underline' }}>

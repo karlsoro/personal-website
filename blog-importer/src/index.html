@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Blog Importer</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' http://localhost:3001 https://unpkg.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://fonts.gstatic.com">
+    
+    <!-- Material-UI and React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Material-UI -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <script src="https://unpkg.com/@mui/material@5/umd/material-ui.development.js"></script>
+    <script src="https://unpkg.com/@emotion/react@11.11.1/dist/emotion-react.umd.min.js"></script>
+    <script src="https://unpkg.com/@emotion/styled@11.11.0/dist/emotion-styled.umd.min.js"></script>
+    
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f5f5f5;
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+      console.log('Blog Importer loading...');
+      
+      // Wait for all libraries to load
+      function waitForLibraries() {
+        return new Promise((resolve, reject) => {
+          let attempts = 0;
+          const maxAttempts = 50; // 5 seconds max
+          
+          const check = () => {
+            attempts++;
+            console.log(`Checking libraries... attempt ${attempts}`);
+            console.log('React:', !!window.React);
+            console.log('ReactDOM:', !!window.ReactDOM);
+            console.log('MaterialUI:', !!window.MaterialUI);
+            
+            if (window.React && window.ReactDOM && window.MaterialUI) {
+              console.log('All libraries loaded successfully');
+              resolve();
+            } else if (attempts >= maxAttempts) {
+              console.error('Failed to load libraries after maximum attempts');
+              reject(new Error('Library loading timeout'));
+            } else {
+              setTimeout(check, 100);
+            }
+          };
+          check();
+        });
+      }
+      
+      waitForLibraries().then(() => {
+        console.log('Starting application...');
+      }).catch((error) => {
+        console.error('Failed to load libraries:', error);
+        document.getElementById('root').innerHTML = `
+          <div style="padding: 20px; text-align: center;">
+            <h2>Error Loading Application</h2>
+            <p>Failed to load required libraries. Please check your internet connection and try again.</p>
+            <p>Error: ${error.message}</p>
+          </div>
+        `;
+        return;
+      }).then(() => {
+        const React = window.React;
+        const { useState } = React;
+        const { createRoot } = window.ReactDOM;
+        const { 
+          Button, 
+          Box, 
+          Typography, 
+          TextField, 
+          Paper, 
+          Stack, 
+          Divider, 
+          Alert,
+          Container,
+          Card,
+          CardContent,
+          CardActions,
+          Chip,
+          IconButton,
+          Tooltip
+        } = window.MaterialUI;
+        
+        // Simple HTTP client using fetch
+        const httpClient = {
+          async post(url, data) {
+            try {
+              const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+              });
+              
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              
+              return {
+                data: await response.json()
+              };
+            } catch (error) {
+              throw error;
+            }
+          }
+        };
+        
+        function parseSummaryMarkdown(md) {
+          const lines = md.split(/\r?\n/).map(line => line.trim());
+          let title = '', date = '', subtitle = '', summaryBody = '', update = '', update2025 = '';
+          let currentField = null;
+          let buffer = [];
+          let expectTitle = false;
+
+          const flushBuffer = () => buffer.join('\n').trim();
+
+          for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+
+            if (/^(#\s*)?Title:$/i.test(line)) {
+              expectTitle = true;
+              continue;
+            }
+            if (expectTitle) {
+              if (line === '') continue;
+              if (/^##\s*(.*)/.test(line)) {
+                title = line.replace(/^##\s*/, '').trim();
+                expectTitle = false;
+                currentField = null;
+                buffer = [];
+                continue;
+              }
+            }
+
+            if (/^###\s*Date:/.test(line)) {
+              if (currentField === 'summaryBody') summaryBody = flushBuffer();
+              if (currentField === 'update') update = flushBuffer();
+              if (currentField === 'update2025') update2025 = flushBuffer();
+              currentField = 'date';
+              buffer = [];
+              continue;
+            }
+            if (/^###\s*Sub-Title:/.test(line)) {
+              if (currentField === 'date') date = flushBuffer();
+              if (currentField === 'summaryBody') summaryBody = flushBuffer();
+              if (currentField === 'update') update = flushBuffer();
+              if (currentField === 'update2025') update2025 = flushBuffer();
+              currentField = 'subtitle';
+              buffer = [];
+              continue;
+            }
+            if (/^###\s*Summary Body:/.test(line)) {
+              if (currentField === 'date') date = flushBuffer();
+              if (currentField === 'subtitle') subtitle = flushBuffer();
+              if (currentField === 'update') update = flushBuffer();
+              if (currentField === 'update2025') update2025 = flushBuffer();
+              currentField = 'summaryBody';
+              buffer = [];
+              continue;
+            }
+            if (/^###\s*UPDATE:/.test(line)) {
+              if (currentField === 'summaryBody') summaryBody = flushBuffer();
+              if (currentField === 'date') date = flushBuffer();
+              if (currentField === 'subtitle') subtitle = flushBuffer();
+              if (currentField === 'update2025') update2025 = flushBuffer();
+              currentField = 'update';
+              buffer = [];
+              continue;
+            }
+            if (/^###\s*\d{4}\s*UPDATE:/.test(line)) {
+              if (currentField === 'summaryBody') summaryBody = flushBuffer();
+              if (currentField === 'update') update = flushBuffer();
+              if (currentField === 'date') date = flushBuffer();
+              if (currentField === 'subtitle') subtitle = flushBuffer();
+              currentField = 'update2025';
+              buffer = [];
+              continue;
+            }
+
+            if (currentField && line !== '') buffer.push(line);
+          }
+
+          if (currentField === 'date') date = flushBuffer();
+          if (currentField === 'subtitle') subtitle = flushBuffer();
+          if (currentField === 'summaryBody') summaryBody = flushBuffer();
+          if (currentField === 'update') update = flushBuffer();
+          if (currentField === 'update2025') update2025 = flushBuffer();
+
+          return { title, date, subtitle, summaryBody, update, update2025 };
+        }
+
+        function App() {
+          const [summaryFile, setSummaryFile] = useState(null);
+          const [detailFile, setDetailFile] = useState(null);
+          const [summaryContent, setSummaryContent] = useState('');
+          const [detailContent, setDetailContent] = useState('');
+          const [parsed, setParsed] = useState(null);
+          const [step, setStep] = useState('select');
+          const [error, setError] = useState('');
+          const [success, setSuccess] = useState(false);
+
+          const handleSummaryChange = (e) => {
+            const file = e.target.files[0];
+            setSummaryFile(file);
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = (ev) => setSummaryContent(ev.target.result);
+              reader.readAsText(file);
+            }
+          };
+
+          const handleDetailChange = (e) => {
+            const file = e.target.files[0];
+            setDetailFile(file);
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = (ev) => setDetailContent(ev.target.result);
+              reader.readAsText(file);
+            }
+          };
+
+          const handleProcess = () => {
+            const parsedSummary = parseSummaryMarkdown(summaryContent);
+            setParsed({ ...parsedSummary, detail: detailContent });
+            setStep('preview');
+          };
+
+          const handleApprove = async () => {
+            setError('');
+            setSuccess(false);
+            try {
+              const response = await httpClient.post('http://localhost:3001/api/blog', parsed);
+              if (response.data && response.data.success) {
+                setSuccess(true);
+                setStep('done');
+              } else {
+                setError('Failed to save blog post.');
+              }
+            } catch (err) {
+              setError('Error saving blog post: ' + (err.message || 'Network error'));
+            }
+          };
+
+          const handleDecline = () => {
+            setSummaryFile(null);
+            setDetailFile(null);
+            setSummaryContent('');
+            setDetailContent('');
+            setParsed(null);
+            setStep('select');
+          };
+
+          const handleCancel = () => {
+            setSummaryFile(null);
+            setDetailFile(null);
+            setSummaryContent('');
+            setDetailContent('');
+            setParsed(null);
+            setStep('select');
+          };
+
+          return (
+            <Container maxWidth="md">
+              <Box sx={{ py: 4 }}>
+                <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ mb: 4, color: 'primary.main' }}>
+                  Blog Importer
+                </Typography>
+                
+                {error && (
+                  <Alert severity="error" sx={{ mb: 3 }}>
+                    {error}
+                  </Alert>
+                )}
+
+                {step === 'select' && (
+                  <Card elevation={3}>
+                    <CardContent>
+                      <Typography variant="h5" component="h2" gutterBottom>
+                        Select Files
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                        Choose your summary and detail markdown files to import
+                      </Typography>
+                      
+                      <Stack spacing={3}>
+                        <Box>
+                          <input
+                            accept=".md,.txt"
+                            style={{ display: 'none' }}
+                            id="summary-file"
+                            type="file"
+                            onChange={handleSummaryChange}
+                          />
+                          <label htmlFor="summary-file">
+                            <Button
+                              variant="outlined"
+                              component="span"
+                              fullWidth
+                              size="large"
+                              startIcon={<span className="material-icons">description</span>}
+                            >
+                              {summaryFile ? summaryFile.name : 'Select Summary File'}
+                            </Button>
+                          </label>
+                          {summaryFile && (
+                            <Chip 
+                              label={summaryFile.name} 
+                              color="primary" 
+                              variant="outlined" 
+                              sx={{ mt: 1 }}
+                            />
+                          )}
+                        </Box>
+
+                        <Box>
+                          <input
+                            accept=".md,.txt"
+                            style={{ display: 'none' }}
+                            id="detail-file"
+                            type="file"
+                            onChange={handleDetailChange}
+                          />
+                          <label htmlFor="detail-file">
+                            <Button
+                              variant="outlined"
+                              component="span"
+                              fullWidth
+                              size="large"
+                              startIcon={<span className="material-icons">article</span>}
+                            >
+                              {detailFile ? detailFile.name : 'Select Detail File'}
+                            </Button>
+                          </label>
+                          {detailFile && (
+                            <Chip 
+                              label={detailFile.name} 
+                              color="primary" 
+                              variant="outlined" 
+                              sx={{ mt: 1 }}
+                            />
+                          )}
+                        </Box>
+
+                        <Button
+                          variant="contained"
+                          size="large"
+                          onClick={handleProcess}
+                          disabled={!summaryContent || !detailContent}
+                          startIcon={<span className="material-icons">play_arrow</span>}
+                        >
+                          Process Files
+                        </Button>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {step === 'preview' && parsed && (
+                  <Card elevation={3}>
+                    <CardContent>
+                      <Typography variant="h5" component="h2" gutterBottom>
+                        Preview Blog Post
+                      </Typography>
+                      
+                      <Stack spacing={2} sx={{ mb: 3 }}>
+                        <TextField
+                          label="Title"
+                          value={parsed.title}
+                          fullWidth
+                          InputProps={{ readOnly: true }}
+                          variant="outlined"
+                        />
+                        <TextField
+                          label="Date"
+                          value={parsed.date}
+                          fullWidth
+                          InputProps={{ readOnly: true }}
+                          variant="outlined"
+                        />
+                        <TextField
+                          label="Sub-Title"
+                          value={parsed.subtitle}
+                          fullWidth
+                          InputProps={{ readOnly: true }}
+                          variant="outlined"
+                        />
+                        <TextField
+                          label="Summary Body"
+                          value={parsed.summaryBody}
+                          multiline
+                          minRows={3}
+                          fullWidth
+                          InputProps={{ readOnly: true }}
+                          variant="outlined"
+                        />
+                        {parsed.update && (
+                          <TextField
+                            label="Update"
+                            value={parsed.update}
+                            fullWidth
+                            InputProps={{ readOnly: true }}
+                            variant="outlined"
+                          />
+                        )}
+                        {parsed.update2025 && (
+                          <TextField
+                            label="2025 Update"
+                            value={parsed.update2025}
+                            fullWidth
+                            InputProps={{ readOnly: true }}
+                            variant="outlined"
+                          />
+                        )}
+                      </Stack>
+
+                      <Typography variant="h6" gutterBottom>
+                        Detail Content
+                      </Typography>
+                      <TextField
+                        value={parsed.detail}
+                        multiline
+                        minRows={10}
+                        fullWidth
+                        InputProps={{ readOnly: true }}
+                        variant="outlined"
+                        sx={{ mb: 3 }}
+                      />
+
+                      <Stack direction="row" spacing={2} justifyContent="center">
+                        <Button
+                          variant="contained"
+                          color="success"
+                          size="large"
+                          onClick={handleApprove}
+                          startIcon={<span className="material-icons">check</span>}
+                        >
+                          Approve
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="warning"
+                          size="large"
+                          onClick={handleDecline}
+                          startIcon={<span className="material-icons">close</span>}
+                        >
+                          Decline
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          size="large"
+                          onClick={handleCancel}
+                          startIcon={<span className="material-icons">cancel</span>}
+                        >
+                          Cancel
+                        </Button>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {step === 'done' && success && (
+                  <Card elevation={3}>
+                    <CardContent>
+                      <Box textAlign="center">
+                        <span className="material-icons" style={{ fontSize: 64, color: 'green', marginBottom: 16 }}>
+                          check_circle
+                        </span>
+                        <Typography variant="h5" component="h2" gutterBottom>
+                          Import Complete
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                          Blog post imported successfully!
+                        </Typography>
+                        <Button
+                          variant="contained"
+                          size="large"
+                          onClick={handleCancel}
+                          startIcon={<span className="material-icons">add</span>}
+                        >
+                          Import Another
+                        </Button>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                )}
+              </Box>
+            </Container>
+          );
+        }
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+      });
+    </script>
+  </body>
+</html>

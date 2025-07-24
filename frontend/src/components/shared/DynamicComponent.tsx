@@ -6,11 +6,7 @@ import { Box, Spinner, Text, Alert, AlertIcon } from '@chakra-ui/react'
 interface DynamicComponentProps {
   componentName: string
   fallback?: React.ReactNode
-  props?: Record<string, any>
-}
-
-interface ComponentModule {
-  default: React.ComponentType<any>
+  props?: Record<string, unknown>
 }
 
 export default function DynamicComponent({ 
@@ -18,7 +14,7 @@ export default function DynamicComponent({
   fallback, 
   props = {} 
 }: DynamicComponentProps) {
-  const [Component, setComponent] = useState<React.ComponentType<any> | null>(null)
+  const [Component, setComponent] = useState<React.ComponentType<unknown> | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -29,10 +25,10 @@ export default function DynamicComponent({
         setError(null)
         
         // Dynamic import based on component name
-        const module = await import(`../features/${componentName}`)
-        setComponent(() => module.default)
-      } catch (err) {
-        console.error(`Failed to load component ${componentName}:`, err)
+        const importedModule = await import(`../features/${componentName}`)
+        setComponent(() => importedModule.default)
+      } catch {
+        // console.error(`Failed to load component ${componentName}`)
         setError(`Failed to load component: ${componentName}`)
       } finally {
         setLoading(false)

@@ -15,8 +15,8 @@ export default function TermsOfUse() {
         setContent(text)
         setLoading(false)
       })
-      .catch(error => {
-        console.error('Error loading terms of use:', error)
+      .catch(() => {
+        // console.error('Error loading terms of use:', error)
         setLoading(false)
       })
   }, [])

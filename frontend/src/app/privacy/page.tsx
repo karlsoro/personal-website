@@ -15,8 +15,8 @@ export default function PrivacyPolicy() {
         setContent(text)
         setLoading(false)
       })
-      .catch(error => {
-        console.error('Error loading privacy policy:', error)
+      .catch(() => {
+        // console.error('Error loading privacy policy:', error)
         setLoading(false)
       })
   }, [])

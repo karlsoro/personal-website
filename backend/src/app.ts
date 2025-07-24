@@ -39,11 +39,11 @@ const limiter = rateLimit({
 app.use('/api/', limiter)
 
 // Logging middleware
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'))
-} else {
-  app.use(morgan('combined'))
-}
+// if (process.env.NODE_ENV === 'development') {
+//   app.use(morgan('dev'))
+// } else {
+//   app.use(morgan('combined'))
+// }
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }))
