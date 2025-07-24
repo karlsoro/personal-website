@@ -31,30 +31,83 @@ A modern, dynamic personal website built with Next.js, Chakra UI, and a Node.js 
 personal-website/
 ├── frontend/                 # Next.js frontend application
 │   ├── src/
-│   │   ├── app/             # Next.js app directory
-│   │   │   ├── privacy/     # Privacy policy page
-│   │   │   ├── cookies/     # Cookies policy page
-│   │   │   ├── terms/       # Terms of use page
-│   │   │   └── ...
+│   │   ├── app/             # Next.js app directory (routing/pages)
+│   │   │   ├── about/           # About page
+│   │   │   │   └── page.tsx
+│   │   │   ├── blog/            # Blog listing and dynamic blog posts
+│   │   │   │   ├── page.tsx     # Blog list page
+│   │   │   │   └── [id]/        # Dynamic blog post route
+│   │   │   │       ├── page.tsx
+│   │   │   │       └── MarkdownClient.tsx
+│   │   │   ├── contact/         # Contact page
+│   │   │   │   └── page.tsx
+│   │   │   ├── cookies/         # Cookies policy page
+│   │   │   │   └── page.tsx
+│   │   │   ├── privacy/         # Privacy policy page
+│   │   │   │   └── page.tsx
+│   │   │   ├── projects/        # Projects page
+│   │   │   │   └── page.tsx
+│   │   │   ├── terms/           # Terms of use page
+│   │   │   │   └── page.tsx
+│   │   │   ├── test/            # Test/demo page
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx       # App layout
+│   │   │   ├── page.tsx         # Home page
+│   │   │   ├── providers.tsx    # Providers (Chakra, etc.)
+│   │   │   └── globals.css      # Global styles
 │   │   ├── components/      # React components
-│   │   │   ├── layout/      # Layout components (Header, Footer, etc.)
-│   │   │   ├── features/    # Feature components (Hero, About, Projects, etc.)
+│   │   │   ├── features/    # Feature components
+│   │   │   │   ├── About.tsx
+│   │   │   │   ├── Blog.tsx
+│   │   │   │   ├── Contact.tsx
+│   │   │   │   ├── Hero.tsx
+│   │   │   │   ├── HomeBlogSection.tsx
+│   │   │   │   └── Projects.tsx
+│   │   │   ├── layout/      # Layout components
+│   │   │   │   ├── Footer.tsx
+│   │   │   │   ├── Header.tsx
+│   │   │   │   └── MainLayout.tsx
 │   │   │   └── shared/      # Shared components
-│   │   └── ...
+│   │   │       ├── DynamicComponent.tsx
+│   │   │       └── MarkdownRenderer.tsx
 │   └── public/              # Static assets and markdown files
+│       ├── CookiePolicy.md
+│       ├── PrivacyPolicy.md
+│       ├── TermsofUse.md
+│       ├── Soa To Microservices Case.pdf
+│       ├── [icons, images, manifest, etc.]
 ├── backend/                  # Node.js backend application
 │   ├── src/
-│   │   ├── config/          # Configuration files
-│   │   ├── controllers/     # Route controllers
-│   │   ├── middleware/      # Express middleware
-│   │   ├── models/          # MongoDB models
-│   │   ├── routes/          # API routes
-│   │   ├── services/        # Business logic services
-│   │   └── utils/           # Utility functions
+│   │   ├── config/          # Configuration files (e.g., database.ts)
+│   │   ├── middleware/      # Express middleware (errorHandler, notFound)
+│   │   ├── models/          # MongoDB models (BlogPost, Contact, Project)
+│   │   ├── routes/          # API routes (blog, contact, projects)
+│   │   ├── scripts/         # Utility scripts (init-db.ts)
+│   │   ├── services/        # Business logic services (emailService)
+│   │   ├── app.ts           # Express app setup
+│   │   └── server.ts        # Server entry point
 │   ├── PrivacyPolicy.md     # Privacy policy content
 │   ├── CookiePolicy.md      # Cookie policy content
-│   └── TermsofUse.md        # Terms of use content
-└── README.md               # This file
+│   ├── TermsofUse.md        # Terms of use content
+│   ├── Dockerfile           # Docker support
+│   └── azure-deploy.json    # Azure deployment config
+├── blog-importer/           # Blog import tool (for migrating or managing blog content)
+│   ├── src/
+│   │   ├── index.html
+│   │   ├── index.dev.html
+│   │   ├── index.css
+│   │   ├── main.js
+│   │   ├── renderer.js
+│   │   ├── preload.js
+│   │   └── preload-direct.js
+│   ├── forge.config.js
+│   ├── webpack.main.config.js
+│   ├── webpack.renderer.config.js
+│   ├── webpack.rules.js
+│   └── package.json
+├── website_icons/            # Source icons for website/app manifests
+│   ├── [various .png files]
+└── README.md                 # This file
 ```
 
 ## 🛠️ Technology Stack
