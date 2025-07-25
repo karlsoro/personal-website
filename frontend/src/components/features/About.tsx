@@ -86,6 +86,13 @@ export default function About() {
 
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10} mb={16}>
           <Feature
+            icon={FaDatabase}
+            title={'Data, Analytics and AI'}
+            text={
+              'Designing real-time data flows, implementing advanced analytics solutions, and integrating AI capabilities to drive business insights.'
+            }
+          />
+          <Feature
             icon={FaUsers}
             title={'Organizational Transformation'}
             text={
@@ -97,13 +104,6 @@ export default function About() {
             title={'End to End System Design'}
             text={
               'Architecting comprehensive solutions from data flows to user interfaces, ensuring seamless integration across all system components.'
-            }
-          />
-          <Feature
-            icon={FaDatabase}
-            title={'Data, Analytics and AI'}
-            text={
-              'Designing real-time data flows, implementing advanced analytics solutions, and integrating AI capabilities to drive business insights.'
             }
           />
           <Feature
