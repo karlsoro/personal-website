@@ -40,16 +40,19 @@ jobs:
         push: true
         tags: ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME_FRONTEND }}:${{ github.sha }}
 
-    - name: Deploy to Azure Container Apps - Frontend
-      uses: azure/container-apps-deploy-action@v1
+    - name: Azure login
+      uses: azure/login@v2
       with:
-        appSourcePath: ${{ github.workspace }}
-        acrName: kspersonalwebsite
-        acrUsername: ${{ secrets.REGISTRY_USERNAME }}
-        acrPassword: ${{ secrets.REGISTRY_PASSWORD }}
-        containerAppName: ks-personal-website-frontend
-        resourceGroup: KS_resource_group
-        imageToDeploy: ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME_FRONTEND }}:${{ github.sha }}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Deploy to Azure Container Apps - Frontend
+      run: |
+        az containerapp update \
+          --name ks-personal-website-frontend \
+          --resource-group KS_resource_group \
+          --image ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME_FRONTEND }}:${{ github.sha }}
 
   build-and-deploy-backend:
     runs-on: ubuntu-latest
@@ -76,13 +79,16 @@ jobs:
         push: true
         tags: ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME_BACKEND }}:${{ github.sha }}
 
-    - name: Deploy to Azure Container Apps - Backend
-      uses: azure/container-apps-deploy-action@v1
+    - name: Azure login
+      uses: azure/login@v2
       with:
-        appSourcePath: ${{ github.workspace }}
-        acrName: kspersonalwebsite
-        acrUsername: ${{ secrets.REGISTRY_USERNAME }}
-        acrPassword: ${{ secrets.REGISTRY_PASSWORD }}
-        containerAppName: ks-personal-website-api
-        resourceGroup: KS_resource_group
-        imageToDeploy: ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME_BACKEND }}:${{ github.sha }} 
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Deploy to Azure Container Apps - Backend
+      run: |
+        az containerapp update \
+          --name ks-personal-website-api \
+          --resource-group KS_resource_group \
+          --image ${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME_BACKEND }}:${{ github.sha }} 
