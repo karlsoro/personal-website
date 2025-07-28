@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator'
 import Contact from '../models/Contact'
 import { sendContactEmail } from '../services/emailService'
 import mongoose from 'mongoose'
+import { requireAuth, requireAdmin } from '../middleware/auth'
 
 const router = express.Router()
 
@@ -98,7 +99,7 @@ router.post('/', validateContact, async (req: Request, res: Response): Promise<v
 })
 
 // GET /api/contact - Get all contacts (admin only)
-router.get('/', async (req: Request, res: Response): Promise<void> => {
+router.get('/', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
     const contacts = await Contact.find()
       .sort({ createdAt: -1 })
@@ -119,7 +120,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 })
 
 // GET /api/contact/:id - Get single contact (admin only)
-router.get('/:id', async (req: Request, res: Response): Promise<void> => {
+router.get('/:id', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
     const contact = await Contact.findById(req.params.id).select('-__v')
 
@@ -145,7 +146,7 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
 })
 
 // PATCH /api/contact/:id - Update contact status (admin only)
-router.patch('/:id', async (req: Request, res: Response): Promise<void> => {
+router.patch('/:id', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   try {
     const { status } = req.body
 

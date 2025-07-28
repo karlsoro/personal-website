@@ -19,9 +19,12 @@ interface BlogPost {
 
 async function getBlogPost(id: string): Promise<BlogPost | null> {
   try {
-    const res = await fetch(`https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/blog/${id}`, { 
+    const res = await fetch(`https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/blog/${id}`, {
       cache: 'no-store',
-      next: { revalidate: 0 }
+      next: { revalidate: 0 },
+      headers: {
+        'x-api-key': process.env.NEXT_PUBLIC_API_KEY || ''
+      }
     });
     
     if (!res.ok) {

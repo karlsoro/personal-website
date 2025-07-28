@@ -147,7 +147,24 @@ if (!window.MaterialUI) {
       setError('');
       setSuccess(false);
       try {
-        const response = await axios.post('http://localhost:3001/api/blog', parsed);
+        // Use Azure URL in production, localhost in development
+        const apiUrl = window.location.hostname === 'localhost' 
+          ? 'http://localhost:3001/api/blog'
+          : 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/blog';
+        
+        // Get admin API key from user input
+        const apiKey = prompt('Please enter your admin API key (required for creating blog posts):');
+        if (!apiKey) {
+          setError('Admin API key is required to create blog posts.');
+          return;
+        }
+
+        const response = await axios.post(apiUrl, parsed, {
+          headers: {
+            'x-api-key': apiKey,
+            'Content-Type': 'application/json'
+          }
+        });
         if (response.data && response.data.success) {
           setSuccess(true);
           setStep('done');
