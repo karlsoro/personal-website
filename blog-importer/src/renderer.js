@@ -147,10 +147,10 @@ if (!window.MaterialUI) {
       setError('');
       setSuccess(false);
       try {
-        // Use Azure URL in production, localhost in development
+        // Use Azure APIM URL in production, localhost in development
         const apiUrl = window.location.hostname === 'localhost' 
           ? 'http://localhost:3001/api/blog'
-          : 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/blog';
+          : 'https://ks-personal-website-apim.azure-api.net/personal-website-api/api/blog';
         
         // Get admin API key from user input
         const apiKey = prompt('Please enter your admin API key (required for creating blog posts):');
@@ -161,7 +161,7 @@ if (!window.MaterialUI) {
 
         const response = await axios.post(apiUrl, parsed, {
           headers: {
-            'x-api-key': apiKey,
+            'Ocp-Apim-Subscription-Key': apiKey,
             'Content-Type': 'application/json'
           }
         });

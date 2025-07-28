@@ -1,7 +1,6 @@
 import express from 'express'
 import { body, validationResult } from 'express-validator'
 import BlogPost from '../models/BlogPost'
-import { requireAuth, requireAdmin, optionalAuth } from '../middleware/auth'
 
 const router = express.Router()
 
@@ -38,8 +37,8 @@ const validateBlogPost = [
     .withMessage('Update2025 must be less than 2000 characters')
 ]
 
-// GET /api/blog - Get all blog posts (public, optional auth for rate limiting)
-router.get('/', optionalAuth, async (req, res) => {
+// GET /api/blog - Get all blog posts
+router.get('/', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 2;
     const posts = await BlogPost.find()
@@ -60,8 +59,8 @@ router.get('/', optionalAuth, async (req, res) => {
   }
 })
 
-// GET /api/blog/:id - Get single blog post (public, optional auth for rate limiting)
-router.get('/:id', optionalAuth, async (req, res) => {
+// GET /api/blog/:id - Get single blog post
+router.get('/:id', async (req, res) => {
   try {
     const post = await BlogPost.findById(req.params.id).exec();
     if (!post) {
@@ -85,8 +84,8 @@ router.get('/:id', optionalAuth, async (req, res) => {
   }
 });
 
-// POST /api/blog - Create a new blog post (admin only)
-router.post('/', requireAdmin, validateBlogPost, async (req: express.Request, res: express.Response) => {
+// POST /api/blog - Create a new blog post (protected by APIM)
+router.post('/', validateBlogPost, async (req: express.Request, res: express.Response) => {
   try {
     // Check for validation errors
     const errors = validationResult(req)
