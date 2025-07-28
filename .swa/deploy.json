@@ -1,0 +1,7 @@
+{
+  "appLocation": "frontend",
+  "apiLocation": "backend",
+  "outputLocation": ".next",
+  "appBuildCommand": "npm run build",
+  "apiBuildCommand": "npm run build"
+} 
