@@ -2,6 +2,8 @@
 
 A modern, dynamic personal website built with Next.js, Chakra UI, and a Node.js backend. This project showcases my professional experience as a Transformational IT Leader with expertise in organizational transformation, system design, and technology leadership.
 
+**🚀 Now with automated deployment via GitHub Actions to Azure Container Apps!**
+
 ## 🌟 Features
 
 ### Frontend (Next.js + Chakra UI)
