@@ -12,6 +12,7 @@ import blogRoutes from './routes/blog'
 // Import middleware
 import { errorHandler } from './middleware/errorHandler'
 import { notFound } from './middleware/notFound'
+import { csrfProtectionMiddleware, csrfErrorHandler, getCsrfToken } from './middleware/csrf'
 
 const app = express()
 
@@ -59,8 +60,11 @@ app.get('/health', (req, res) => {
   })
 })
 
-// API routes
-app.use('/api/contact', contactRoutes)
+// CSRF token endpoint (must be before CSRF protection)
+app.get('/api/csrf-token', getCsrfToken)
+
+// API routes with CSRF protection
+app.use('/api/contact', csrfProtectionMiddleware, contactRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/blog', blogRoutes)
 
@@ -80,6 +84,7 @@ app.get('/api', (req, res) => {
 })
 
 // Error handling middleware
+app.use(csrfErrorHandler)
 app.use(notFound)
 app.use(errorHandler)
 
