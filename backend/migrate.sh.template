@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "🚀 Starting migration from local MongoDB to Azure Cosmos DB..."
+
+# Set the Cosmos DB connection string
+# Replace YOUR_CONNECTION_STRING with your actual Cosmos DB connection string
+export MONGODB_CONNECTION_STRING="YOUR_CONNECTION_STRING"
+
+# Run the migration script
+npm run migrate-to-cosmos
+
+echo "✅ Migration script completed!" 
