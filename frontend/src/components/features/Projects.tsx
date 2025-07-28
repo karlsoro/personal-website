@@ -34,14 +34,6 @@ const projects: Project[] = [
     liveUrl: '/Soa To Microservices Case.pdf',
   },
   {
-    title: 'Task Management App',
-    description: 'A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
-    technologies: ['React', 'Socket.io', 'MongoDB', 'Express'],
-    githubUrl: '#',
-    liveUrl: '#',
-  },
-  {
     title: 'Weather Consensus',
     description: 'The weather consensus app is working code that is part of a tutorial series for various engineering roles. It includes a sample outline for three roles/levels.',
     image: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
@@ -51,9 +43,9 @@ const projects: Project[] = [
   },
   {
     title: 'Blog Platform',
-    description: 'A modern blog platform with markdown support, SEO optimization, and a content management system.',
+    description: 'A modern blog platform that allows for the upload and display of blog posts and when appropriate updates on how accurate they were. This is a purpose built component for use on this site to allow blog (and other) posts from various platforms over the years to be displayed in a consistent manner. There is a desktop component as well for uploading from specifically formatted markdown files.',
     image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
-    technologies: ['Next.js', 'MDX', 'Tailwind CSS', 'Vercel'],
+    technologies: ['Next.js', 'ChakraUI', 'Markdown', 'React'],
     githubUrl: '#',
     liveUrl: '#',
   },

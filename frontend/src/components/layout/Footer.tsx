@@ -28,7 +28,7 @@ export default function Footer() {
         justify={{ md: 'space-between' }}
         align={{ md: 'center' }}
       >
-        <Text>© 2024 Karl Sorochinski. All rights reserved</Text>
+        <Text>© 2025 Karl Sorochinski. All rights reserved</Text>
         
         <Stack direction={'row'} spacing={6} align="center">
           <Link href="/privacy" _hover={{ textDecoration: 'underline' }}>
