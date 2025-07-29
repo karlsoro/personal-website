@@ -282,4 +282,4 @@ This is a personal website project, but suggestions and feedback are welcome!
 - **LinkedIn**: [Karl Sorochinski](https://www.linkedin.com/in/karl-sorochinski-0893402/)
 - **GitHub**: [karlsoro](https://github.com/karlsoro)
 - **Twitter**: [@KarlSoro1965](https://twitter.com/KarlSoro1965)
-Something to commit 1
+Something to commit 1# Trigger new deployment for CSRF fix
