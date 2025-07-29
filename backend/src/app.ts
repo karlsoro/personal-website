@@ -12,7 +12,7 @@ import blogRoutes from './routes/blog'
 // Import middleware
 import { errorHandler } from './middleware/errorHandler'
 import { notFound } from './middleware/notFound'
-import { csrfProtectionMiddleware, csrfErrorHandler, getCsrfToken } from './middleware/csrf'
+// import { csrfProtectionMiddleware, csrfErrorHandler, getCsrfToken } from './middleware/csrf'
 
 const app = express()
 
