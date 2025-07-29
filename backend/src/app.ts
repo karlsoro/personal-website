@@ -62,12 +62,7 @@ app.use('/api/blog', limiter)
 //   app.use(morgan('combined'))
 // }
 
-// API routes with CSRF protection
-app.use('/api/contact', contactRoutes) // Temporarily disabled CSRF for testing
-app.use('/api/projects', projectRoutes)
-app.use('/api/blog', blogRoutes)
-
-// CSRF token endpoint (after API routes)
+// CSRF token endpoint (before API routes)
 app.get('/api/csrf-token', (req, res) => {
   res.json({
     success: true,
@@ -82,6 +77,11 @@ app.get('/api/test', (req, res) => {
     message: 'Test endpoint working'
   });
 })
+
+// API routes with CSRF protection
+app.use('/api/contact', contactRoutes) // Temporarily disabled CSRF for testing
+app.use('/api/projects', projectRoutes)
+app.use('/api/blog', blogRoutes)
 
 // API documentation endpoint
 app.get('/api', (req, res) => {
