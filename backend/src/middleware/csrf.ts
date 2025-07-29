@@ -36,7 +36,7 @@ export const csrfErrorHandler = (error: any, req: Request, res: Response, next: 
 };
 
 // CSRF token endpoint for frontend to get tokens
-export const getCsrfToken = (req: Request, res: Response) => {
+export const getCsrfToken = (req: Request, res: Response): void => {
   try {
     const token = generateCsrfToken(req, res);
     res.json({
