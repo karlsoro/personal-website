@@ -29,6 +29,28 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 
+// Body parsing middleware
+app.use(express.json({ limit: '10mb' }))
+app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    uptime: process.uptime()
+  })
+})
+
+// CSRF token endpoint (must be before rate limiting)
+app.get('/api/csrf-token', (req, res) => {
+  res.json({
+    success: true,
+    message: 'CSRF token endpoint test - middleware import working'
+  });
+})
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'), // 15 minutes
@@ -45,28 +67,6 @@ app.use('/api/', limiter)
 // } else {
 //   app.use(morgan('combined'))
 // }
-
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }))
-app.use(express.urlencoded({ extended: true, limit: '10mb' }))
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV,
-    uptime: process.uptime()
-  })
-})
-
-// CSRF token endpoint (must be before CSRF protection)
-app.get('/api/csrf-token', (req, res) => {
-  res.json({
-    success: true,
-    message: 'CSRF token endpoint test - middleware import working'
-  });
-})
 
 // API routes with CSRF protection
 app.use('/api/contact', contactRoutes) // Temporarily disabled CSRF for testing
