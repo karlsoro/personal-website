@@ -67,7 +67,9 @@ const limiter = rateLimit({
     error: 'Too many requests from this IP, please try again later.'
   }
 })
-app.use('/api/', limiter)
+app.use('/api/contact', limiter)
+app.use('/api/projects', limiter)
+app.use('/api/blog', limiter)
 
 // Logging middleware
 // if (process.env.NODE_ENV === 'development') {
