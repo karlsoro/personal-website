@@ -43,22 +43,6 @@ app.get('/health', (req, res) => {
   })
 })
 
-// CSRF token endpoint (must be before rate limiting)
-app.get('/api/csrf-token', (req, res) => {
-  res.json({
-    success: true,
-    message: 'CSRF token endpoint test - middleware import working'
-  });
-})
-
-// Test endpoint to verify routing
-app.get('/api/test', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Test endpoint working'
-  });
-})
-
 // Rate limiting
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'), // 15 minutes
@@ -82,6 +66,22 @@ app.use('/api/blog', limiter)
 app.use('/api/contact', contactRoutes) // Temporarily disabled CSRF for testing
 app.use('/api/projects', projectRoutes)
 app.use('/api/blog', blogRoutes)
+
+// CSRF token endpoint (after API routes)
+app.get('/api/csrf-token', (req, res) => {
+  res.json({
+    success: true,
+    message: 'CSRF token endpoint test - middleware import working'
+  });
+})
+
+// Test endpoint to verify routing
+app.get('/api/test', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Test endpoint working'
+  });
+})
 
 // API documentation endpoint
 app.get('/api', (req, res) => {
