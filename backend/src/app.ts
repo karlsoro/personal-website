@@ -51,6 +51,14 @@ app.get('/api/csrf-token', (req, res) => {
   });
 })
 
+// Test endpoint to verify routing
+app.get('/api/test', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Test endpoint working'
+  });
+})
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'), // 15 minutes
