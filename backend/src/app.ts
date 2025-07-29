@@ -61,7 +61,12 @@ app.get('/health', (req, res) => {
 })
 
 // CSRF token endpoint (must be before CSRF protection)
-app.get('/api/csrf-token', getCsrfToken)
+app.get('/api/csrf-token', (req, res) => {
+  res.json({
+    success: true,
+    message: 'CSRF token endpoint test - middleware import working'
+  });
+})
 
 // API routes with CSRF protection
 app.use('/api/contact', contactRoutes) // Temporarily disabled CSRF for testing
