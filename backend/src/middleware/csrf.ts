@@ -26,11 +26,12 @@ export const generateCsrfToken = csrfProtection.generateCsrfToken;
 // CSRF error handler
 export const csrfErrorHandler = (error: any, req: Request, res: Response, next: NextFunction) => {
   if (error.code === 'EBADCSRFTOKEN') {
-    return res.status(403).json({
+    res.status(403).json({
       success: false,
       message: 'CSRF token validation failed. Please refresh the page and try again.',
       error: 'CSRF_TOKEN_INVALID'
     });
+    return;
   }
   next(error);
 };
