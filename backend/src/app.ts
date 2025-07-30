@@ -61,30 +61,10 @@ app.use('/api/blog', limiter)
 //   app.use(morgan('combined'))
 // }
 
-// Simple test endpoint
-app.get('/test', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Test endpoint working'
-  });
-})
 
-// Security status endpoint
-app.get('/api/security-status', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Security status endpoint working',
-    security: {
-      helmet: 'enabled',
-      cors: 'configured',
-      rateLimit: 'enabled',
-      apiManagement: 'enabled'
-    }
-  });
-})
 
-// API routes with CSRF protection
-app.use('/api/contact', contactRoutes) // Temporarily disabled CSRF for testing
+// API routes
+app.use('/api/contact', contactRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/blog', blogRoutes)
 
