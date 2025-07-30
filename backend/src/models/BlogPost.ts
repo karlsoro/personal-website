@@ -5,7 +5,7 @@ export interface IBlogPost extends Document {
   date: string; // Accepts dd/mm/yyyy, mm/yyyy, or yyyy
   subtitle: string;
   summaryBody: string;
-  update?: string;
+  updateText?: string;
   update2025?: string;
   detail: string; // Markdown content
   createdAt: Date;
@@ -36,7 +36,7 @@ const blogPostSchema = new Schema<IBlogPost>({
     required: [true, 'Summary Body is required'],
     trim: true
   },
-  update: {
+  updateText: {
     type: String,
     trim: true,
     default: ''

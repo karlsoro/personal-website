@@ -4,28 +4,29 @@ import BlogPost from '../models/BlogPost'
 
 const router = express.Router()
 
-// Validation middleware for blog posts
+// Validation middleware for blog post creation
 const validateBlogPost = [
   body('title')
     .trim()
     .isLength({ min: 1, max: 200 })
     .withMessage('Title must be between 1 and 200 characters'),
   body('date')
-    .isISO8601()
-    .withMessage('Date must be a valid ISO 8601 date'),
+    .trim()
+    .isLength({ min: 1, max: 20 })
+    .withMessage('Date must be between 1 and 20 characters'),
   body('subtitle')
     .trim()
-    .isLength({ min: 1, max: 500 })
-    .withMessage('Subtitle must be between 1 and 500 characters'),
+    .isLength({ min: 1, max: 200 })
+    .withMessage('Subtitle must be between 1 and 200 characters'),
   body('summaryBody')
     .trim()
-    .isLength({ min: 10, max: 2000 })
-    .withMessage('Summary must be between 10 and 2000 characters'),
+    .isLength({ min: 1 })
+    .withMessage('Summary body is required'),
   body('detail')
     .trim()
-    .isLength({ min: 10, max: 50000 })
-    .withMessage('Detail must be between 10 and 50000 characters'),
-  body('update')
+    .isLength({ min: 1 })
+    .withMessage('Detail content is required'),
+  body('updateText')
     .optional()
     .trim()
     .isLength({ max: 2000 })
@@ -97,14 +98,14 @@ router.post('/', validateBlogPost, async (req: express.Request, res: express.Res
       });
     }
 
-    const { title, date, subtitle, summaryBody, update, update2025, detail } = req.body;
+    const { title, date, subtitle, summaryBody, updateText, update2025, detail } = req.body;
     
     const blogPost = new BlogPost({
       title,
       date,
       subtitle,
       summaryBody,
-      update: update || '',
+      updateText: updateText || '',
       update2025: update2025 || '',
       detail
     });
