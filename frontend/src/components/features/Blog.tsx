@@ -47,7 +47,7 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
         // Fallback to current year if no date
         year = new Date().getFullYear().toString();
       }
-    } catch (error) {
+    } catch {
       // Fallback to current year if date parsing fails
       year = new Date().getFullYear().toString();
     }
