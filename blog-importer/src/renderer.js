@@ -152,7 +152,8 @@ if (!window.MaterialUI) {
           ? 'http://localhost:3001/api/blog'
           : 'https://ks-personal-website-apim.azure-api.net/personal-website-api/api/blog';
         
-        // Get admin API key from user input
+        // SECURITY NOTE: For production, consider storing API key in environment variables
+        // or using a more secure key management system instead of prompting user
         const apiKey = prompt('Please enter your admin API key (required for creating blog posts):');
         if (!apiKey) {
           setError('Admin API key is required to create blog posts.');

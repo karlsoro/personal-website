@@ -8,6 +8,17 @@ export const connectDatabase = async (): Promise<void> => {
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
+      // Azure Cosmos DB compatibility options
+      retryWrites: false,
+      w: 'majority',
+      // Force older MongoDB wire protocol for Cosmos DB compatibility
+      maxIdleTimeMS: 30000,
+      // Disable features not supported by Cosmos DB
+      bufferCommands: false,
+      bufferMaxEntries: 0,
+      // Use legacy connection string format if needed
+      useNewUrlParser: true,
+      useUnifiedTopology: true
     })
 
     console.log('📦 MongoDB connected successfully')
