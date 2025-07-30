@@ -38,7 +38,7 @@ const validateBlogPost = [
     .withMessage('Update2025 must be less than 2000 characters')
 ]
 
-// GET /api/blog - Get all blog posts
+// GET /api/blog - Get all blog posts (with limit)
 router.get('/', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 2;
@@ -52,7 +52,7 @@ router.get('/', async (req, res) => {
       data: posts
     });
   } catch (error) {
-    // console.error('Get blog posts error:', error)
+    console.error('Get blog posts error:', error);
     return res.status(500).json({
       success: false,
       message: 'Failed to fetch blog posts'
@@ -63,6 +63,7 @@ router.get('/', async (req, res) => {
 // GET /api/blog/all - Get all blog posts with IDs (for management)
 router.get('/all', async (req, res) => {
   try {
+    console.log('HIT /all endpoint');
     const posts = await BlogPost.find()
       .sort({ date: -1, createdAt: -1 })
       .select('_id title date subtitle createdAt')
@@ -77,31 +78,6 @@ router.get('/all', async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Failed to fetch all blog posts'
-    });
-  }
-});
-
-// GET /api/blog/:id - Get single blog post
-router.get('/:id', async (req, res) => {
-  try {
-    const post = await BlogPost.findById(req.params.id).exec();
-    if (!post) {
-      return res.status(404).json({
-        success: false,
-        message: 'Blog post not found',
-        data: null
-      });
-    }
-    return res.json({
-      success: true,
-      message: 'Fetched blog post',
-      data: post
-    });
-  } catch (error) {
-    // console.error('Get blog post error:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to fetch blog post'
     });
   }
 });
@@ -150,6 +126,7 @@ router.post('/', validateBlogPost, async (req: express.Request, res: express.Res
 // DELETE /api/blog/test - Delete test blog posts (protected by APIM)
 router.delete('/test', async (req: express.Request, res: express.Response) => {
   try {
+    console.log('HIT /test DELETE endpoint');
     // Delete all blog posts with "test" in the title (case insensitive)
     const result = await BlogPost.deleteMany({
       title: { $regex: /test/i }
@@ -169,9 +146,36 @@ router.delete('/test', async (req: express.Request, res: express.Response) => {
   }
 });
 
-// DELETE /api/blog/:id - Delete a specific blog post (protected by APIM)
-router.delete('/:id', async (req: express.Request, res: express.Response) => {
+// GET /api/blog/:id - Get single blog post (only matches valid MongoDB ObjectIDs)
+router.get('/:id([a-fA-F0-9]{24})', async (req, res) => {
   try {
+    console.log('HIT /:id GET endpoint with ID:', req.params.id);
+    const post = await BlogPost.findById(req.params.id).exec();
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: 'Blog post not found',
+        data: null
+      });
+    }
+    return res.json({
+      success: true,
+      message: 'Fetched blog post',
+      data: post
+    });
+  } catch (error) {
+    console.error('Get blog post error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch blog post'
+    });
+  }
+});
+
+// DELETE /api/blog/:id - Delete a specific blog post (only matches valid MongoDB ObjectIDs)
+router.delete('/:id([a-fA-F0-9]{24})', async (req: express.Request, res: express.Response) => {
+  try {
+    console.log('HIT /:id DELETE endpoint with ID:', req.params.id);
     const postId = req.params.id;
     
     // First, get the post to show what we're deleting
@@ -205,4 +209,4 @@ router.delete('/:id', async (req: express.Request, res: express.Response) => {
   }
 });
 
-export default router // Force deployment refresh - Wed Jul 30 09:26:39 AM EDT 2025
+export default router
