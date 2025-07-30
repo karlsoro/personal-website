@@ -3,6 +3,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import rateLimit from 'express-rate-limit'
+import mongoose from 'mongoose'
 
 // Import routes
 import contactRoutes from './routes/contact'
@@ -38,14 +39,27 @@ app.use(cors(corsOptions))
 app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 
-// Health check endpoint
+// Enhanced health check endpoint
 app.get('/health', (req, res) => {
-  res.status(200).json({
+  const healthStatus = {
     status: 'OK',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV,
-    uptime: process.uptime()
-  })
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    database: {
+      connected: mongoose.connection.readyState === 1,
+      state: mongoose.connection.readyState,
+      databaseName: mongoose.connection.db?.databaseName || 'unknown'
+    },
+    version: process.version,
+    platform: process.platform
+  }
+  
+  // Return 503 if database is not connected in production
+  const statusCode = (process.env.NODE_ENV === 'production' && !healthStatus.database.connected) ? 503 : 200
+  
+  res.status(statusCode).json(healthStatus)
 })
 
 // Rate limiting
@@ -66,8 +80,6 @@ app.use('/api/blog', limiter)
 // } else {
 //   app.use(morgan('combined'))
 // }
-
-
 
 // API routes
 app.use('/api/contact', contactRoutes)
