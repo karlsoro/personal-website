@@ -4,10 +4,9 @@ import BlogPost from '../models/BlogPost'
 
 const router = express.Router()
 
-// FORCE FRESH DEPLOYMENT - Route matching fix applied
 // Debug middleware to trace all requests
 router.use((req, res, next) => {
-  console.log(`[DEBUG] ${req.method} ${req.originalUrl} - Params: ${JSON.stringify(req.params)}`);
+  console.log(`[BLOG DEBUG] ${req.method} ${req.originalUrl} - Params: ${JSON.stringify(req.params)}`);
   next();
 });
 
@@ -45,45 +44,35 @@ const validateBlogPost = [
     .withMessage('Update2025 must be less than 2000 characters')
 ]
 
-// Route 1: GET /api/blog - Basic posts with limit
-router.get('/', async (req, res) => {
+// Route 1: GET /api/blog/home - Home page posts (2 posts)
+router.get('/home', async (req, res) => {
   try {
-    console.log('[DEBUG] HIT / (root) endpoint');
-    const limit = parseInt(req.query.limit as string) || 2;
+    console.log('[BLOG] HIT /home endpoint');
     const posts = await BlogPost.find()
       .sort({ date: -1, createdAt: -1 })
-      .limit(limit)
+      .limit(2)
       .exec();
     return res.json({
       success: true,
-      message: 'Fetched blog posts',
+      message: 'Fetched home page blog posts',
       data: posts
     });
   } catch (error) {
-    console.error('Get blog posts error:', error);
+    console.error('Get home blog posts error:', error);
     return res.status(500).json({
       success: false,
-      message: 'Failed to fetch blog posts'
+      message: 'Failed to fetch home blog posts'
     })
   }
 })
 
-// Route 2: GET /api/blog/all - All posts with IDs (for management)
-router.get('/all', async (req, res) => {
+// Route 2: GET /api/blog - All posts (no limit)
+router.get('/', async (req, res) => {
   try {
-    console.log('[DEBUG] HIT /all endpoint');
+    console.log('[BLOG] HIT / (root) endpoint');
     const posts = await BlogPost.find()
       .sort({ date: -1, createdAt: -1 })
-      .select('_id title date subtitle createdAt')
       .exec();
-    console.log('[DEBUG] Posts fetched:', posts.length, 'posts'); // Debug log as recommended
-    if (posts.length === 0) {
-      return res.json({
-        success: true,
-        message: 'No blog posts found',
-        data: []
-      });
-    }
     return res.json({
       success: true,
       message: 'Fetched all blog posts',
@@ -93,15 +82,15 @@ router.get('/all', async (req, res) => {
     console.error('Get all blog posts error:', error);
     return res.status(500).json({
       success: false,
-      message: 'Failed to fetch all blog posts'
-    });
+      message: 'Failed to fetch blog posts'
+    })
   }
-});
+})
 
 // Route 3: POST /api/blog - Create new post
 router.post('/', validateBlogPost, async (req: express.Request, res: express.Response) => {
   try {
-    console.log('[DEBUG] HIT POST / endpoint');
+    console.log('[BLOG] HIT POST / endpoint');
     // Check for validation errors
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
@@ -143,7 +132,7 @@ router.post('/', validateBlogPost, async (req: express.Request, res: express.Res
 // Route 4: DELETE /api/blog/test - Delete test posts
 router.delete('/test', async (req, res) => {
   try {
-    console.log('[DEBUG] HIT DELETE /test endpoint');
+    console.log('[BLOG] HIT DELETE /test endpoint');
     // Delete all blog posts with "test" in the title (case insensitive)
     const result = await BlogPost.deleteMany({
       title: { $regex: /test/i }
@@ -167,9 +156,9 @@ router.delete('/test', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(`[DEBUG] HIT GET /:id endpoint with ID: ${id}`);
+    console.log(`[BLOG] HIT GET /:id endpoint with ID: ${id}`);
     
-    // Validate MongoDB ObjectID format as recommended
+    // Validate MongoDB ObjectID format
     if (!/^[a-fA-F0-9]{24}$/.test(id)) {
       return res.status(400).json({
         success: false,
@@ -203,9 +192,9 @@ router.get('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(`[DEBUG] HIT DELETE /:id endpoint with ID: ${id}`);
+    console.log(`[BLOG] HIT DELETE /:id endpoint with ID: ${id}`);
     
-    // Validate MongoDB ObjectID format as recommended
+    // Validate MongoDB ObjectID format
     if (!/^[a-fA-F0-9]{24}$/.test(id)) {
       return res.status(400).json({
         success: false,

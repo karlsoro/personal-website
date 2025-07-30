@@ -8,8 +8,8 @@ import Contact from '@/components/features/Contact'
 async function getLatestBlogPosts() {
   // Use direct backend URL for public blog access
   const apiUrl = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3001/api/blog?limit=2'
-    : 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/blog?limit=2';
+    ? 'http://localhost:3001/api/blog/home'
+    : 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/blog/home';
     
   const res = await fetch(apiUrl, { 
     cache: 'no-store'
