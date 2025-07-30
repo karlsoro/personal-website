@@ -14,11 +14,7 @@ export const connectDatabase = async (): Promise<void> => {
       // Force older MongoDB wire protocol for Cosmos DB compatibility
       maxIdleTimeMS: 30000,
       // Disable features not supported by Cosmos DB
-      bufferCommands: false,
-      bufferMaxEntries: 0,
-      // Use legacy connection string format if needed
-      useNewUrlParser: true,
-      useUnifiedTopology: true
+      bufferCommands: false
     })
 
     console.log('📦 MongoDB connected successfully')
