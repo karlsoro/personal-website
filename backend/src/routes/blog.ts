@@ -4,6 +4,7 @@ import BlogPost from '../models/BlogPost'
 
 const router = express.Router()
 
+// FORCE FRESH DEPLOYMENT - Route matching fix applied
 // Debug middleware to trace all requests
 router.use((req, res, next) => {
   console.log(`[DEBUG] ${req.method} ${req.originalUrl} - Params: ${JSON.stringify(req.params)}`);
