@@ -19,12 +19,14 @@ interface BlogPost {
 
 async function getBlogPost(id: string): Promise<BlogPost | null> {
   try {
-    const res = await fetch(`https://ks-personal-website-apim.azure-api.net/personal-website-api/api/blog/${id}`, {
+    // Use direct backend URL for public blog access
+    const apiUrl = process.env.NODE_ENV === 'development'
+      ? `http://localhost:3001/api/blog/${id}`
+      : `https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/blog/${id}`;
+      
+    const res = await fetch(apiUrl, {
       cache: 'no-store',
-      next: { revalidate: 0 },
-      headers: {
-        'Ocp-Apim-Subscription-Key': process.env.NEXT_PUBLIC_API_KEY || ''
-      }
+      next: { revalidate: 0 }
     });
     
     if (!res.ok) {

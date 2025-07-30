@@ -6,11 +6,13 @@ import HomeBlogSection from '@/components/features/HomeBlogSection'
 import Contact from '@/components/features/Contact'
 
 async function getLatestBlogPosts() {
-  const res = await fetch('https://ks-personal-website-apim.azure-api.net/personal-website-api/api/blog?limit=2', { 
-    cache: 'no-store',
-    headers: {
-      'Ocp-Apim-Subscription-Key': process.env.NEXT_PUBLIC_API_KEY || ''
-    }
+  // Use direct backend URL for public blog access
+  const apiUrl = process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3001/api/blog?limit=2'
+    : 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/blog?limit=2';
+    
+  const res = await fetch(apiUrl, { 
+    cache: 'no-store'
   });
   const data = await res.json();
   return data.data || [];
