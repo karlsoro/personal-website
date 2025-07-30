@@ -4,6 +4,12 @@ import BlogPost from '../models/BlogPost'
 
 const router = express.Router()
 
+// Debug middleware to trace all requests
+router.use((req, res, next) => {
+  console.log(`[DEBUG] ${req.method} ${req.originalUrl} - Params: ${JSON.stringify(req.params)}`);
+  next();
+});
+
 // Validation middleware for blog post creation
 const validateBlogPost = [
   body('title')
@@ -38,9 +44,10 @@ const validateBlogPost = [
     .withMessage('Update2025 must be less than 2000 characters')
 ]
 
-// GET /api/blog - Get all blog posts (with limit)
+// Route 1: GET /api/blog - Basic posts with limit
 router.get('/', async (req, res) => {
   try {
+    console.log('[DEBUG] HIT / (root) endpoint');
     const limit = parseInt(req.query.limit as string) || 2;
     const posts = await BlogPost.find()
       .sort({ date: -1, createdAt: -1 })
@@ -60,10 +67,10 @@ router.get('/', async (req, res) => {
   }
 })
 
-// GET /api/blog/all - Get all blog posts with IDs (for management)
+// Route 2: GET /api/blog/all - All posts with IDs (for management) - DEFINED FIRST
 router.get('/all', async (req, res) => {
   try {
-    console.log('HIT /all endpoint');
+    console.log('[DEBUG] HIT /all endpoint');
     const posts = await BlogPost.find()
       .sort({ date: -1, createdAt: -1 })
       .select('_id title date subtitle createdAt')
@@ -82,9 +89,10 @@ router.get('/all', async (req, res) => {
   }
 });
 
-// POST /api/blog - Create a new blog post (protected by APIM)
+// Route 3: POST /api/blog - Create new post
 router.post('/', validateBlogPost, async (req: express.Request, res: express.Response) => {
   try {
+    console.log('[DEBUG] HIT POST / endpoint');
     // Check for validation errors
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
@@ -123,10 +131,10 @@ router.post('/', validateBlogPost, async (req: express.Request, res: express.Res
   }
 });
 
-// DELETE /api/blog/test - Delete test blog posts (protected by APIM)
+// Route 4: DELETE /api/blog/test - Delete test posts - DEFINED BEFORE /:id
 router.delete('/test', async (req: express.Request, res: express.Response) => {
   try {
-    console.log('HIT /test DELETE endpoint');
+    console.log('[DEBUG] HIT DELETE /test endpoint');
     // Delete all blog posts with "test" in the title (case insensitive)
     const result = await BlogPost.deleteMany({
       title: { $regex: /test/i }
@@ -146,10 +154,10 @@ router.delete('/test', async (req: express.Request, res: express.Response) => {
   }
 });
 
-// GET /api/blog/:id - Get single blog post (only matches valid MongoDB ObjectIDs)
+// Route 5: GET /api/blog/:id - Get single post (regex validation for MongoDB ObjectIDs)
 router.get('/:id([a-fA-F0-9]{24})', async (req, res) => {
   try {
-    console.log('HIT /:id GET endpoint with ID:', req.params.id);
+    console.log(`[DEBUG] HIT GET /:id endpoint with ID: ${req.params.id}`);
     const post = await BlogPost.findById(req.params.id).exec();
     if (!post) {
       return res.status(404).json({
@@ -172,10 +180,10 @@ router.get('/:id([a-fA-F0-9]{24})', async (req, res) => {
   }
 });
 
-// DELETE /api/blog/:id - Delete a specific blog post (only matches valid MongoDB ObjectIDs)
+// Route 6: DELETE /api/blog/:id - Delete single post (regex validation for MongoDB ObjectIDs)
 router.delete('/:id([a-fA-F0-9]{24})', async (req: express.Request, res: express.Response) => {
   try {
-    console.log('HIT /:id DELETE endpoint with ID:', req.params.id);
+    console.log(`[DEBUG] HIT DELETE /:id endpoint with ID: ${req.params.id}`);
     const postId = req.params.id;
     
     // First, get the post to show what we're deleting
@@ -207,6 +215,16 @@ router.delete('/:id([a-fA-F0-9]{24})', async (req: express.Request, res: express
       message: 'Failed to delete blog post: ' + (error instanceof Error ? error.message : 'Unknown error')
     });
   }
+});
+
+// Catch-all route for unmatched paths
+router.use('*', (req, res) => {
+  console.log(`[DEBUG] Catch-all route hit for: ${req.originalUrl}`);
+  res.status(404).json({ 
+    success: false, 
+    error: `Not Found - ${req.originalUrl}`,
+    message: 'Route not found'
+  });
 });
 
 export default router

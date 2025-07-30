@@ -15,6 +15,12 @@ import { notFound } from './middleware/notFound'
 
 const app = express()
 
+// Debug middleware to trace all incoming requests
+app.use((req, res, next) => {
+  console.log(`[APP DEBUG] ${req.method} ${req.originalUrl} - Headers: ${JSON.stringify(req.headers)}`);
+  next();
+});
+
 // Security middleware
 app.use(helmet())
 
