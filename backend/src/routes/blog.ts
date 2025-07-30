@@ -60,6 +60,27 @@ router.get('/', async (req, res) => {
   }
 })
 
+// GET /api/blog/all - Get all blog posts with IDs (for management)
+router.get('/all', async (req, res) => {
+  try {
+    const posts = await BlogPost.find()
+      .sort({ date: -1, createdAt: -1 })
+      .select('_id title date subtitle createdAt')
+      .exec();
+    return res.json({
+      success: true,
+      message: 'Fetched all blog posts',
+      data: posts
+    });
+  } catch (error) {
+    console.error('Get all blog posts error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch all blog posts'
+    });
+  }
+});
+
 // GET /api/blog/:id - Get single blog post
 router.get('/:id', async (req, res) => {
   try {
@@ -122,6 +143,64 @@ router.post('/', validateBlogPost, async (req: express.Request, res: express.Res
     return res.status(500).json({
       success: false,
       message: 'Failed to create blog post: ' + (error instanceof Error ? error.message : 'Unknown error')
+    });
+  }
+});
+
+// DELETE /api/blog/:id - Delete a specific blog post (protected by APIM)
+router.delete('/:id', async (req: express.Request, res: express.Response) => {
+  try {
+    const postId = req.params.id;
+    
+    // First, get the post to show what we're deleting
+    const post = await BlogPost.findById(postId).select('title date').exec();
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: 'Blog post not found',
+        data: null
+      });
+    }
+    
+    // Delete the post
+    await BlogPost.findByIdAndDelete(postId).exec();
+    
+    return res.json({
+      success: true,
+      message: `Deleted blog post: "${post.title}" (${post.date})`,
+      deletedPost: {
+        id: postId,
+        title: post.title,
+        date: post.date
+      }
+    });
+  } catch (error) {
+    console.error('Delete blog post error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to delete blog post: ' + (error instanceof Error ? error.message : 'Unknown error')
+    });
+  }
+});
+
+// DELETE /api/blog/test - Delete test blog posts (protected by APIM)
+router.delete('/test', async (req: express.Request, res: express.Response) => {
+  try {
+    // Delete all blog posts with "test" in the title (case insensitive)
+    const result = await BlogPost.deleteMany({
+      title: { $regex: /test/i }
+    });
+    
+    return res.json({
+      success: true,
+      message: `Deleted ${result.deletedCount} test blog posts`,
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    console.error('Delete test posts error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to delete test posts: ' + (error instanceof Error ? error.message : 'Unknown error')
     });
   }
 });

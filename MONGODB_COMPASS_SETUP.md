@@ -2,10 +2,44 @@
 
 ## Connection String Format
 
-Your Azure Cosmos DB connection string should look like this:
+Your Azure Cosmos DB connection string:
 ```
 mongodb://ks-personal-website-cosmos:YOUR_PRIMARY_KEY@ks-personal-website-cosmos.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@ks-personal-website-cosmos@
 ```
+
+## Alternative Connection Methods
+
+### Method 1: Simplified Connection String
+Try this simplified version in MongoDB Compass:
+```
+mongodb://ks-personal-website-cosmos:YOUR_PRIMARY_KEY@ks-personal-website-cosmos.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false
+```
+
+### Method 2: Advanced Connection Options
+In MongoDB Compass, use the "Advanced Connection Options" tab:
+
+**Connection String:**
+```
+mongodb://ks-personal-website-cosmos:YOUR_PRIMARY_KEY@ks-personal-website-cosmos.mongo.cosmos.azure.com:10255
+```
+
+**Additional Options:**
+- `ssl=true`
+- `replicaSet=globaldb`
+- `retrywrites=false`
+- `maxIdleTimeMS=120000`
+
+### Method 3: Manual Connection Fields
+Fill in these fields manually in Compass:
+
+- **Hostname:** `ks-personal-website-cosmos.mongo.cosmos.azure.com`
+- **Port:** `10255`
+- **Authentication:** Username/Password
+- **Username:** `ks-personal-website-cosmos`
+- **Password:** `YOUR_PRIMARY_KEY`
+- **Authentication Database:** `admin`
+- **SSL:** Enabled
+- **Replica Set Name:** `globaldb`
 
 ## Getting Your Connection String
 
@@ -18,94 +52,44 @@ mongodb://ks-personal-website-cosmos:YOUR_PRIMARY_KEY@ks-personal-website-cosmos
 
 ### Method 2: Azure CLI
 ```bash
-az cosmosdb keys list --name ks-personal-website-cosmos --resource-group KS_resource_group --type connection-strings
+az cosmosdb keys list --name ks-personal-website-cosmos --resource-group KS_resource_group --type connection-strings --query "connectionStrings[0].connectionString" --output tsv
 ```
-
-## MongoDB Compass Settings
-
-### Connection Settings
-- **Connection String**: Use the full connection string from Azure
-- **Authentication**: Username/Password (included in connection string)
-- **SSL**: Enabled (required for Azure Cosmos DB)
-
-### Advanced Options
-- **Server Selection Timeout**: 5000ms
-- **Socket Timeout**: 45000ms
-- **Max Pool Size**: 10
-- **Retry Writes**: Disabled
-- **Write Concern**: majority
-
-### Compatibility Settings
-- **Use Legacy Connection String Format**: Enabled
-- **Use New URL Parser**: Enabled
-- **Use Unified Topology**: Enabled
 
 ## Troubleshooting
 
-### Common Issues
+### If Connection Times Out:
+1. **Check Firewall:** Ensure port 10255 is not blocked
+2. **Try Different Network:** Test from a different network/location
+3. **Use Azure Portal:** Try connecting via Azure Portal's Data Explorer instead
 
-#### 1. Wire Version Error
-**Error**: "Server reports maximum wire version 6, but this version requires at least 8"
+### If Wire Version Error Persists:
+1. **Update MongoDB Compass:** Use the latest version
+2. **Try Studio 3T:** Alternative MongoDB client
+3. **Use Azure Data Explorer:** Built into Azure Portal
 
-**Solution**: 
-- Use Mongoose 7.x instead of 8.x
-- Add compatibility options to connection string
-- Use the updated database configuration
+## Alternative: Azure Portal Data Explorer
 
-#### 2. Connection Timeout
-**Error**: Connection times out
+If MongoDB Compass continues to have issues:
 
-**Solution**:
-- Check firewall settings
-- Verify connection string format
-- Increase timeout values
-- Ensure SSL is enabled
+1. Go to [Azure Portal](https://portal.azure.com)
+2. Navigate to your Cosmos DB account
+3. Click **"Data Explorer"** in the left menu
+4. Browse and manage your collections directly in the browser
 
-#### 3. Authentication Failed
-**Error**: Authentication failed
+## Database Cleanup via API
 
-**Solution**:
-- Verify username/password in connection string
-- Check if the key is still valid
-- Ensure the database name is correct
+Since the website is working, you can also clean up test records via the API:
 
-### Connection String Parameters
+```bash
+# Get all blog posts
+curl "https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/blog?limit=1000"
 
-Add these parameters to your connection string for better compatibility:
-
-```
-?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@ks-personal-website-cosmos@&bufferCommands=false&bufferMaxEntries=0
+# Delete specific post (if you have admin access)
+# Note: This would require implementing a DELETE endpoint
 ```
 
-## Database Structure
-
-Your Cosmos DB should contain:
-- **Database**: `personal-website` (or similar)
-- **Collections**: 
-  - `blogposts` - Blog post documents
-  - `contacts` - Contact form submissions
-  - `projects` - Project information
-
-## Cleanup Operations
-
-Once connected, you can:
-1. **View Collections**: Navigate to your database and collections
-2. **Query Documents**: Use the query interface to find specific records
-3. **Delete Test Records**: 
-   - Find documents with `title: "test"`
-   - Select and delete unwanted records
-4. **Export Data**: Export collections for backup
-
-## Security Notes
-
-- Keep your connection string secure
-- Don't share connection strings in public repositories
-- Rotate keys regularly
-- Use read-only access when possible for viewing data
-
-## Alternative: Azure Data Explorer
-
-If MongoDB Compass continues to have issues, you can also use:
-- **Azure Data Explorer** (Kusto)
-- **Azure Cosmos DB Data Explorer** (built into Azure Portal)
-- **MongoDB Shell** (mongosh) with connection string 
+## Current Status
+- ✅ Website API calls work correctly
+- ✅ Backend connects to Cosmos DB successfully
+- ⚠️ MongoDB Compass has compatibility issues
+- ✅ Azure Portal Data Explorer is available as alternative 
