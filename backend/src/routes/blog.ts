@@ -98,7 +98,7 @@ router.get('/all', async (req, res) => {
 });
 
 // Route 3: POST /api/blog - Create new post
-router.post('/', validateBlogPost, async (req, res) => {
+router.post('/', validateBlogPost, async (req: express.Request, res: express.Response) => {
   try {
     console.log('[DEBUG] HIT POST / endpoint');
     // Check for validation errors
