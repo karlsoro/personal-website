@@ -61,6 +61,14 @@ app.use('/api/blog', limiter)
 //   app.use(morgan('combined'))
 // }
 
+// Simple test endpoint
+app.get('/test', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Test endpoint working'
+  });
+})
+
 // Security status endpoint
 app.get('/api/security-status', (req, res) => {
   res.json({
