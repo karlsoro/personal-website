@@ -12,7 +12,6 @@ import blogRoutes from './routes/blog'
 // Import middleware
 import { errorHandler } from './middleware/errorHandler'
 import { notFound } from './middleware/notFound'
-// import { csrfProtectionMiddleware, csrfErrorHandler, getCsrfToken } from './middleware/csrf'
 
 const app = express()
 
@@ -62,19 +61,17 @@ app.use('/api/blog', limiter)
 //   app.use(morgan('combined'))
 // }
 
-// CSRF token endpoint (before API routes)
-app.get('/api/csrf-token', (req, res) => {
+// Security status endpoint
+app.get('/api/security-status', (req, res) => {
   res.json({
     success: true,
-    message: 'CSRF token endpoint test - middleware import working'
-  });
-})
-
-// Test endpoint to verify routing
-app.get('/api/test', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Test endpoint working'
+    message: 'Security status endpoint working',
+    security: {
+      helmet: 'enabled',
+      cors: 'configured',
+      rateLimit: 'enabled',
+      apiManagement: 'enabled'
+    }
   });
 })
 
@@ -99,7 +96,6 @@ app.get('/api', (req, res) => {
 })
 
 // Error handling middleware
-// app.use(csrfErrorHandler) // Temporarily disabled for testing
 app.use(notFound)
 app.use(errorHandler)
 
