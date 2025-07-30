@@ -147,6 +147,28 @@ router.post('/', validateBlogPost, async (req: express.Request, res: express.Res
   }
 });
 
+// DELETE /api/blog/test - Delete test blog posts (protected by APIM)
+router.delete('/test', async (req: express.Request, res: express.Response) => {
+  try {
+    // Delete all blog posts with "test" in the title (case insensitive)
+    const result = await BlogPost.deleteMany({
+      title: { $regex: /test/i }
+    });
+    
+    return res.json({
+      success: true,
+      message: `Deleted ${result.deletedCount} test blog posts`,
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    console.error('Delete test posts error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to delete test posts: ' + (error instanceof Error ? error.message : 'Unknown error')
+    });
+  }
+});
+
 // DELETE /api/blog/:id - Delete a specific blog post (protected by APIM)
 router.delete('/:id', async (req: express.Request, res: express.Response) => {
   try {
@@ -179,28 +201,6 @@ router.delete('/:id', async (req: express.Request, res: express.Response) => {
     return res.status(500).json({
       success: false,
       message: 'Failed to delete blog post: ' + (error instanceof Error ? error.message : 'Unknown error')
-    });
-  }
-});
-
-// DELETE /api/blog/test - Delete test blog posts (protected by APIM)
-router.delete('/test', async (req: express.Request, res: express.Response) => {
-  try {
-    // Delete all blog posts with "test" in the title (case insensitive)
-    const result = await BlogPost.deleteMany({
-      title: { $regex: /test/i }
-    });
-    
-    return res.json({
-      success: true,
-      message: `Deleted ${result.deletedCount} test blog posts`,
-      deletedCount: result.deletedCount
-    });
-  } catch (error) {
-    console.error('Delete test posts error:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to delete test posts: ' + (error instanceof Error ? error.message : 'Unknown error')
     });
   }
 });
