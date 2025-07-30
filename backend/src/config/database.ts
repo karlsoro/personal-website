@@ -27,9 +27,9 @@ export const connectDatabase = async (): Promise<void> => {
   } catch (error) {
     console.error('❌ MongoDB connection error:', error)
     console.error('❌ Error details:', {
-      name: error.name,
-      message: error.message,
-      code: error.code
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : String(error),
+      code: (error as any)?.code || 'Unknown'
     })
     
     // In development, continue without MongoDB
