@@ -67,7 +67,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-// Route 2: GET /api/blog/all - All posts with IDs (for management) - DEFINED FIRST
+// Route 2: GET /api/blog/all - All posts with IDs (for management)
 router.get('/all', async (req, res) => {
   try {
     console.log('[DEBUG] HIT /all endpoint');
@@ -75,6 +75,14 @@ router.get('/all', async (req, res) => {
       .sort({ date: -1, createdAt: -1 })
       .select('_id title date subtitle createdAt')
       .exec();
+    console.log('[DEBUG] Posts fetched:', posts.length, 'posts'); // Debug log as recommended
+    if (posts.length === 0) {
+      return res.json({
+        success: true,
+        message: 'No blog posts found',
+        data: []
+      });
+    }
     return res.json({
       success: true,
       message: 'Fetched all blog posts',
@@ -90,7 +98,7 @@ router.get('/all', async (req, res) => {
 });
 
 // Route 3: POST /api/blog - Create new post
-router.post('/', validateBlogPost, async (req: express.Request, res: express.Response) => {
+router.post('/', validateBlogPost, async (req, res) => {
   try {
     console.log('[DEBUG] HIT POST / endpoint');
     // Check for validation errors
@@ -131,8 +139,8 @@ router.post('/', validateBlogPost, async (req: express.Request, res: express.Res
   }
 });
 
-// Route 4: DELETE /api/blog/test - Delete test posts - DEFINED BEFORE /:id
-router.delete('/test', async (req: express.Request, res: express.Response) => {
+// Route 4: DELETE /api/blog/test - Delete test posts
+router.delete('/test', async (req, res) => {
   try {
     console.log('[DEBUG] HIT DELETE /test endpoint');
     // Delete all blog posts with "test" in the title (case insensitive)
@@ -154,11 +162,21 @@ router.delete('/test', async (req: express.Request, res: express.Response) => {
   }
 });
 
-// Route 5: GET /api/blog/:id - Get single post (regex validation for MongoDB ObjectIDs)
-router.get('/:id([a-fA-F0-9]{24})', async (req, res) => {
+// Route 5: GET /api/blog/:id - Get single post (MongoDB ObjectID validation)
+router.get('/:id', async (req, res) => {
   try {
-    console.log(`[DEBUG] HIT GET /:id endpoint with ID: ${req.params.id}`);
-    const post = await BlogPost.findById(req.params.id).exec();
+    const { id } = req.params;
+    console.log(`[DEBUG] HIT GET /:id endpoint with ID: ${id}`);
+    
+    // Validate MongoDB ObjectID format as recommended
+    if (!/^[a-fA-F0-9]{24}$/.test(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid blog post ID format'
+      });
+    }
+    
+    const post = await BlogPost.findById(id).exec();
     if (!post) {
       return res.status(404).json({
         success: false,
@@ -180,14 +198,22 @@ router.get('/:id([a-fA-F0-9]{24})', async (req, res) => {
   }
 });
 
-// Route 6: DELETE /api/blog/:id - Delete single post (regex validation for MongoDB ObjectIDs)
-router.delete('/:id([a-fA-F0-9]{24})', async (req: express.Request, res: express.Response) => {
+// Route 6: DELETE /api/blog/:id - Delete single post (MongoDB ObjectID validation)
+router.delete('/:id', async (req, res) => {
   try {
-    console.log(`[DEBUG] HIT DELETE /:id endpoint with ID: ${req.params.id}`);
-    const postId = req.params.id;
+    const { id } = req.params;
+    console.log(`[DEBUG] HIT DELETE /:id endpoint with ID: ${id}`);
+    
+    // Validate MongoDB ObjectID format as recommended
+    if (!/^[a-fA-F0-9]{24}$/.test(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid blog post ID format'
+      });
+    }
     
     // First, get the post to show what we're deleting
-    const post = await BlogPost.findById(postId).select('title date').exec();
+    const post = await BlogPost.findById(id).select('title date').exec();
     if (!post) {
       return res.status(404).json({
         success: false,
@@ -197,13 +223,13 @@ router.delete('/:id([a-fA-F0-9]{24})', async (req: express.Request, res: express
     }
     
     // Delete the post
-    await BlogPost.findByIdAndDelete(postId).exec();
+    await BlogPost.findByIdAndDelete(id).exec();
     
     return res.json({
       success: true,
       message: `Deleted blog post: "${post.title}" (${post.date})`,
       deletedPost: {
-        id: postId,
+        id: id,
         title: post.title,
         date: post.date
       }
@@ -215,16 +241,6 @@ router.delete('/:id([a-fA-F0-9]{24})', async (req: express.Request, res: express
       message: 'Failed to delete blog post: ' + (error instanceof Error ? error.message : 'Unknown error')
     });
   }
-});
-
-// Catch-all route for unmatched paths
-router.use('*', (req, res) => {
-  console.log(`[DEBUG] Catch-all route hit for: ${req.originalUrl}`);
-  res.status(404).json({ 
-    success: false, 
-    error: `Not Found - ${req.originalUrl}`,
-    message: 'Route not found'
-  });
 });
 
 export default router
