@@ -25,6 +25,7 @@ interface BlogPost {
   detail: string;
   date: string;
   createdAt: string;
+  keywords?: string[];
 }
 
 interface GroupedPosts {
@@ -114,9 +115,9 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
                     <Image
                       h={'200px'}
                       w={'full'}
-                      src={getBlogImageUrl(getBlogImage(post.summaryBody, post.title))}
+                      src={getBlogImageUrl(getBlogImage(post.summaryBody, post.title, post.keywords))}
                       objectFit={'cover'}
-                      alt={getBlogImage(post.summaryBody, post.title).alt}
+                      alt={getBlogImage(post.summaryBody, post.title, post.keywords).alt}
                       fallbackSrc="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
                     />
                     <Box p={6}>

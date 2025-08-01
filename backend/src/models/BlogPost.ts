@@ -8,6 +8,7 @@ export interface IBlogPost extends Document {
   updateText?: string;
   update2025?: string;
   detail: string; // Markdown content
+  keywords?: string[]; // Array of keywords for image selection
   createdAt: Date;
   updatedAt: Date;
 }
@@ -49,6 +50,16 @@ const blogPostSchema = new Schema<IBlogPost>({
   detail: {
     type: String,
     required: [true, 'Detail markdown is required']
+  },
+  keywords: {
+    type: [String],
+    default: [],
+    validate: {
+      validator: function(v: string[]) {
+        return v.every(keyword => typeof keyword === 'string' && keyword.trim().length > 0);
+      },
+      message: 'Keywords must be non-empty strings'
+    }
   }
 }, {
   timestamps: true

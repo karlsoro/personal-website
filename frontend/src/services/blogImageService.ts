@@ -128,7 +128,24 @@ export const BLOG_IMAGES: BlogImage[] = [
   }
 ]
 
-export const getBlogImage = (postContent: string, postTitle: string = ''): BlogImage => {
+export const getBlogImage = (postContent: string, postTitle: string = '', postKeywords: string[] = []): BlogImage => {
+  // If we have keywords from the database, use those for matching
+  if (postKeywords && postKeywords.length > 0) {
+    const searchText = postKeywords.join(' ').toLowerCase()
+    
+    // Find images that match the keywords
+    const matchingImages = BLOG_IMAGES.filter(image => 
+      image.keywords.some(keyword => searchText.includes(keyword.toLowerCase()))
+    )
+    
+    // If we have matches, return a random one
+    if (matchingImages.length > 0) {
+      const randomIndex = Math.floor(Math.random() * matchingImages.length)
+      return matchingImages[randomIndex]
+    }
+  }
+  
+  // Fallback to content analysis if no keywords or no matches
   const searchText = `${postTitle} ${postContent}`.toLowerCase()
   
   // Find images that match the content

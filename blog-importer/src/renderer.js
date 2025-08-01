@@ -13,6 +13,41 @@ if (!window.MaterialUI) {
 } else {
   const { Button, Box, Typography, TextField, Paper, Stack, Divider, Alert } = window.MaterialUI;
 
+  // Available keywords for selection
+  const AVAILABLE_KEYWORDS = [
+    // Technology & Development
+    'ai', 'ml', 'artificial intelligence', 'machine learning',
+    'cloud', 'aws', 'azure', 'gcp', 'kubernetes', 'docker', 'devops',
+    'development', 'programming', 'coding', 'software',
+    'security', 'cybersecurity', 'encryption', 'authentication',
+    
+    // Data & Analytics
+    'data', 'analytics', 'big data', 'database', 'sql', 'nosql',
+    'bi', 'business intelligence', 'snowflake', 'databricks',
+    
+    // Business & Management
+    'project', 'management', 'agile', 'scrum', 'kanban',
+    'business', 'strategy', 'organization', 'process',
+    'team', 'collaboration', 'communication',
+    'transformation', 'digital', 'innovation', 'change',
+    
+    // Quality & Performance
+    'testing', 'qa', 'quality', 'assurance',
+    'performance', 'optimization', 'speed', 'efficiency',
+    
+    // User Experience
+    'ux', 'ui', 'user experience', 'design',
+    'trends', 'technology', 'future', 'emerging',
+    
+    // Industry-Specific
+    'fintech', 'financial', 'banking', 'payment',
+    'healthcare', 'medical', 'pharma', 'clinical',
+    'supply chain', 'logistics', 'inventory',
+    'crm', 'customer', 'relationship', 'sales',
+    'compliance', 'governance', 'regulation',
+    'knowledge', 'documentation', 'learning'
+  ];
+
   function parseSummaryMarkdown(md) {
     console.log('--- RAW SUMMARY ---');
     console.log(md);
@@ -84,10 +119,12 @@ if (!window.MaterialUI) {
         if (currentField === 'update') update = flushBuffer();
         if (currentField === 'date') date = flushBuffer();
         if (currentField === 'subtitle') subtitle = flushBuffer();
+        if (currentField === 'keywords') keywords = flushBuffer();
         currentField = 'update2025';
         buffer = [];
         continue;
       }
+
 
       // Add non-empty lines to the current buffer
       if (currentField && line !== '') buffer.push(line);
@@ -110,6 +147,7 @@ if (!window.MaterialUI) {
     const [detailFile, setDetailFile] = useState(null);
     const [summaryContent, setSummaryContent] = useState('');
     const [detailContent, setDetailContent] = useState('');
+    const [selectedKeywords, setSelectedKeywords] = useState([]);
     const [step, setStep] = useState('select'); // select | preview | done
     const [parsed, setParsed] = useState(null);
     const [error, setError] = useState('');
@@ -138,7 +176,7 @@ if (!window.MaterialUI) {
     // Process button: parse and go to preview
     const handleProcess = () => {
       const parsedSummary = parseSummaryMarkdown(summaryContent);
-      setParsed({ ...parsedSummary, detail: detailContent });
+      setParsed({ ...parsedSummary, detail: detailContent, keywords: selectedKeywords });
       setStep('preview');
     };
 
@@ -181,6 +219,7 @@ if (!window.MaterialUI) {
       setDetailFile(null);
       setSummaryContent('');
       setDetailContent('');
+      setSelectedKeywords([]);
       setParsed(null);
       setStep('select');
     };
@@ -189,6 +228,7 @@ if (!window.MaterialUI) {
       setDetailFile(null);
       setSummaryContent('');
       setDetailContent('');
+      setSelectedKeywords([]);
       setParsed(null);
       setStep('select');
     };
@@ -207,7 +247,44 @@ if (!window.MaterialUI) {
               Select Detail File
               <input type="file" accept=".md,.txt" hidden onChange={handleDetailChange} />
             </Button>
-            <Button variant="outlined" onClick={handleProcess} disabled={!summaryContent || !detailContent}>
+            
+            <Typography variant="h6" sx={{ mt: 2 }}>Select Keywords (up to 5)</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+              Choose keywords that best describe your blog post content:
+            </Typography>
+            
+            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 1 }}>
+              {AVAILABLE_KEYWORDS.map((keyword) => (
+                <Button
+                  key={keyword}
+                  variant={selectedKeywords.includes(keyword) ? "contained" : "outlined"}
+                  size="small"
+                  onClick={() => {
+                    if (selectedKeywords.includes(keyword)) {
+                      setSelectedKeywords(selectedKeywords.filter(k => k !== keyword));
+                    } else if (selectedKeywords.length < 5) {
+                      setSelectedKeywords([...selectedKeywords, keyword]);
+                    }
+                  }}
+                  disabled={!selectedKeywords.includes(keyword) && selectedKeywords.length >= 5}
+                  sx={{ justifyContent: 'flex-start', textTransform: 'none' }}
+                >
+                  {keyword}
+                </Button>
+              ))}
+            </Box>
+            
+            {selectedKeywords.length > 0 && (
+              <Typography variant="body2" color="primary">
+                Selected: {selectedKeywords.join(', ')}
+              </Typography>
+            )}
+            
+            <Button 
+              variant="outlined" 
+              onClick={handleProcess} 
+              disabled={!summaryContent || !detailContent}
+            >
               Process
             </Button>
           </Stack>
@@ -220,6 +297,7 @@ if (!window.MaterialUI) {
             <TextField label="Date" value={parsed.date} fullWidth margin="normal" InputProps={{ readOnly: true }} />
             <TextField label="Sub-Title" value={parsed.subtitle} fullWidth margin="normal" InputProps={{ readOnly: true }} />
             <TextField label="Summary Body" value={parsed.summaryBody} multiline minRows={3} fullWidth margin="normal" InputProps={{ readOnly: true }} />
+            {parsed.keywords && parsed.keywords.length > 0 && <TextField label="Keywords" value={parsed.keywords.join(', ')} fullWidth margin="normal" InputProps={{ readOnly: true }} />}
             {parsed.update && <TextField label="Update" value={parsed.update} fullWidth margin="normal" InputProps={{ readOnly: true }} />}
             {parsed.update2025 && <TextField label="2025 Update" value={parsed.update2025} fullWidth margin="normal" InputProps={{ readOnly: true }} />}
             <Typography variant="h6" sx={{ mt: 2 }}>Detail Markdown</Typography>
