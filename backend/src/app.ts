@@ -13,6 +13,7 @@ import blogRoutes from './routes/blog'
 // Import middleware
 import { errorHandler } from './middleware/errorHandler'
 import { notFound } from './middleware/notFound'
+import { httpsRedirect } from './middleware/httpsRedirect'
 
 const app = express()
 
@@ -21,6 +22,9 @@ app.use((req, res, next) => {
   console.log(`[APP DEBUG] ${req.method} ${req.originalUrl} - Headers: ${JSON.stringify(req.headers)}`);
   next();
 });
+
+// HTTPS redirect middleware (must come before other middleware)
+app.use(httpsRedirect)
 
 // Security middleware
 app.use(helmet())

@@ -3,9 +3,18 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
+      // Redirect www to non-www
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'www.sorochinski.com' }],
+        destination: 'https://sorochinski.com/:path*',
+        permanent: true,
+      },
+      // Redirect HTTP to HTTPS (for non-www)
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'sorochinski.com' }],
+        missing: [{ type: 'header', key: 'x-forwarded-proto', value: 'https' }],
         destination: 'https://sorochinski.com/:path*',
         permanent: true,
       },
