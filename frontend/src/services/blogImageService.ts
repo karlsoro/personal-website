@@ -138,10 +138,9 @@ export const getBlogImage = (postContent: string, postTitle: string = '', postKe
       image.keywords.some(keyword => searchText.includes(keyword.toLowerCase()))
     )
     
-    // If we have matches, return a random one
+    // If we have matches, return the first one (deterministic)
     if (matchingImages.length > 0) {
-      const randomIndex = Math.floor(Math.random() * matchingImages.length)
-      return matchingImages[randomIndex]
+      return matchingImages[0]
     }
   }
   
@@ -153,15 +152,17 @@ export const getBlogImage = (postContent: string, postTitle: string = '', postKe
     image.keywords.some(keyword => searchText.includes(keyword.toLowerCase()))
   )
   
-  // If we have matches, return a random one
+  // If we have matches, return the first one (deterministic)
   if (matchingImages.length > 0) {
-    const randomIndex = Math.floor(Math.random() * matchingImages.length)
-    return matchingImages[randomIndex]
+    return matchingImages[0]
   }
   
-  // If no matches, return a random image based on content length (for variety)
-  const randomIndex = Math.floor(Math.random() * BLOG_IMAGES.length)
-  return BLOG_IMAGES[randomIndex]
+  // If no matches, use a deterministic approach based on post title hash
+  const titleHash = postTitle.split('').reduce((hash, char) => {
+    return ((hash << 5) - hash + char.charCodeAt(0)) & 0xffffffff
+  }, 0)
+  const index = Math.abs(titleHash) % BLOG_IMAGES.length
+  return BLOG_IMAGES[index]
 }
 
 export const getBlogImageUrl = (image: BlogImage): string => {
