@@ -2,6 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: process.env.NODE_ENV === 'production' 
+          ? 'https://ks-personal-website-backend.azurewebsites.net/api/:path*'
+          : 'http://localhost:3001/api/:path*',
+      },
+    ];
+  },
   async redirects() {
     return [
       // Redirect www to non-www (both HTTP and HTTPS)
