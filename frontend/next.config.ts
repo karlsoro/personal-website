@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   async redirects() {
     return [
       // Redirect www to non-www (both HTTP and HTTPS)

@@ -9,6 +9,7 @@ import mongoose from 'mongoose'
 import contactRoutes from './routes/contact'
 import projectRoutes from './routes/projects'
 import blogRoutes from './routes/blog'
+import resumeRoutes from './routes/resume'
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler'
@@ -89,6 +90,7 @@ app.use('/api/blog', limiter)
 app.use('/api/contact', contactRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/blog', blogRoutes)
+app.use('/api/resume', resumeRoutes)
 
 // API documentation endpoint
 app.get('/api', (req, res) => {
@@ -99,6 +101,7 @@ app.get('/api', (req, res) => {
       contact: '/api/contact',
       projects: '/api/projects',
       blog: '/api/blog',
+      resume: '/api/resume',
       auth: '/api/auth',
       health: '/health'
     }
