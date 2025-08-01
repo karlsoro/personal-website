@@ -166,19 +166,6 @@ export const getBlogImage = (postContent: string, postTitle: string = '', postKe
 }
 
 export const getBlogImageUrl = (image: BlogImage): string => {
-  // For now, use colored SVG placeholders based on category
-  const category = image.category.toLowerCase()
-  
-  if (category.includes('ai') || category.includes('ml')) {
-    return '/blog-images/placeholder-blue.svg'
-  } else if (category.includes('cloud') || category.includes('devops')) {
-    return '/blog-images/placeholder-green.svg'
-  } else if (category.includes('data') || category.includes('analytics')) {
-    return '/blog-images/placeholder-purple.svg'
-  } else if (category.includes('security') || category.includes('cyber')) {
-    return '/blog-images/placeholder-orange.svg'
-  } else {
-    // Default to blue for other categories
-    return '/blog-images/placeholder-blue.svg'
-  }
+  // Use the actual SVG image files
+  return `/blog-images/${image.filename.replace('.jpg', '.svg')}`
 } 

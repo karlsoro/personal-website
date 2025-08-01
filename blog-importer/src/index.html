@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Blog Importer</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' http://localhost:3001 https://unpkg.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://fonts.gstatic.com">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io https://unpkg.com https://cdn.jsdelivr.net https://fonts.googleapis.com https://fonts.gstatic.com">
     
     <!-- Material-UI and React -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -104,7 +104,12 @@
         const httpClient = {
           async post(url, data) {
             try {
-              const response = await fetch(url, {
+              // Always use production API for blog importer
+              const baseUrl = 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io';
+              const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
+              
+              console.log('Sending request to:', fullUrl);
+              const response = await fetch(fullUrl, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -164,31 +169,67 @@
           'mobile', 'budget', 'risk'
         ];
 
-        function parseSummaryMarkdown(md) {
+                function parseSummaryMarkdown(md) {
           const lines = md.split(/\r?\n/).map(line => line.trim());
           let title = '', date = '', subtitle = '', summaryBody = '', update = '', update2025 = '';
           let currentField = null;
           let buffer = [];
-          let expectTitle = false;
 
           const flushBuffer = () => buffer.join('\n').trim();
 
           for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
 
-            if (/^(#\s*)?Title:$/i.test(line)) {
-              expectTitle = true;
+            // Look for date in format ## July 2012
+            if (/^##\s*(.+)/.test(line) && !date) {
+              date = line.replace(/^##\s*/, '').trim();
               continue;
             }
-            if (expectTitle) {
-              if (line === '') continue;
-              if (/^##\s*(.*)/.test(line)) {
-                title = line.replace(/^##\s*/, '').trim();
-                expectTitle = false;
-                currentField = null;
-                buffer = [];
-                continue;
-              }
+
+            // Look for **Title:** format
+            if (/^\*\*Title:\*\*\s*(.+)/.test(line)) {
+              title = line.replace(/^\*\*Title:\*\*\s*/, '').trim();
+              continue;
+            }
+
+            // Look for **Subtitle:** format
+            if (/^\*\*Subtitle:\*\*\s*(.+)/.test(line)) {
+              subtitle = line.replace(/^\*\*Subtitle:\*\*\s*/, '').trim();
+              continue;
+            }
+
+            // Look for **Original Summary:** format
+            if (/^\*\*Original Summary:\*\*\s*/.test(line)) {
+              currentField = 'summaryBody';
+              buffer = [];
+              continue;
+            }
+
+            // Look for **18-Month Update:** format
+            if (/^\*\*18-Month Update\s*\([^)]+\):\*\*\s*/.test(line)) {
+              if (currentField === 'summaryBody') summaryBody = flushBuffer();
+              currentField = 'update';
+              buffer = [];
+              continue;
+            }
+
+            // Look for **2025 Update:** format
+            if (/^\*\*2025 Update:\*\*\s*/.test(line)) {
+              if (currentField === 'summaryBody') summaryBody = flushBuffer();
+              if (currentField === 'update') update = flushBuffer();
+              currentField = 'update2025';
+              buffer = [];
+              continue;
+            }
+
+            // Legacy format support
+            if (/^(#\s*)?Title:$/i.test(line)) {
+              // Skip this line, look for ## Title on next line
+              continue;
+            }
+            if (/^##\s*(.*)/.test(line) && !title && !date) {
+              title = line.replace(/^##\s*/, '').trim();
+              continue;
             }
 
             if (/^###\s*Date:/.test(line)) {
@@ -281,7 +322,8 @@
 
           const handleProcess = () => {
             const parsedSummary = parseSummaryMarkdown(summaryContent);
-            setParsed({ ...parsedSummary, detail: detailContent, keywords: selectedKeywords });
+            const fullParsed = { ...parsedSummary, detail: detailContent, keywords: selectedKeywords };
+            setParsed(fullParsed);
             setStep('preview');
           };
 
@@ -289,7 +331,7 @@
             setError('');
             setSuccess(false);
             try {
-              const response = await httpClient.post('http://localhost:3001/api/blog', parsed);
+              const response = await httpClient.post('/api/blog', parsed);
               if (response.data && response.data.success) {
                 setSuccess(true);
                 setStep('done');
