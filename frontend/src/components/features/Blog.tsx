@@ -13,6 +13,7 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import Link from 'next/link';
+import { getBlogImage, getBlogImageUrl } from '@/services/blogImageService';
 
 interface BlogPost {
   _id: string;
@@ -113,12 +114,10 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
                     <Image
                       h={'200px'}
                       w={'full'}
-                      src={
-                        // Use a default image or a field if available
-                        'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
-                      }
+                      src={getBlogImageUrl(getBlogImage(post.summaryBody, post.title))}
                       objectFit={'cover'}
-                      alt={post.title}
+                      alt={getBlogImage(post.summaryBody, post.title).alt}
+                      fallbackSrc="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
                     />
                     <Box p={6}>
                       <Heading size="md" mb={2}>
