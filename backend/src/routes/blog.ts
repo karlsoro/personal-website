@@ -41,7 +41,17 @@ const validateBlogPost = [
     .optional()
     .trim()
     .isLength({ max: 2000 })
-    .withMessage('Update2025 must be less than 2000 characters')
+    .withMessage('Update2025 must be less than 2000 characters'),
+  body('keywords')
+    .optional()
+    .isArray()
+    .withMessage('Keywords must be an array'),
+  body('keywords.*')
+    .optional()
+    .isString()
+    .trim()
+    .isLength({ min: 1, max: 50 })
+    .withMessage('Each keyword must be between 1 and 50 characters')
 ]
 
 // Route 1: GET /api/blog/home - Home page posts (2 posts)
@@ -101,7 +111,7 @@ router.post('/', validateBlogPost, async (req: express.Request, res: express.Res
       });
     }
 
-    const { title, date, subtitle, summaryBody, updateText, update2025, detail } = req.body;
+    const { title, date, subtitle, summaryBody, updateText, update2025, detail, keywords } = req.body;
     
     const blogPost = new BlogPost({
       title,
@@ -110,7 +120,8 @@ router.post('/', validateBlogPost, async (req: express.Request, res: express.Res
       summaryBody,
       updateText: updateText || '',
       update2025: update2025 || '',
-      detail
+      detail,
+      keywords: keywords || []
     });
     
     console.log('Creating blog post with data:', blogPost);
