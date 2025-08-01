@@ -26,7 +26,7 @@ export const BLOG_IMAGES: BlogImage[] = [
   },
   {
     filename: 'blog-cybersecurity.jpg',
-    keywords: ['security', 'cybersecurity', 'encryption', 'authentication', 'firewall', 'vulnerability', 'threat', 'compliance', 'gdpr', 'privacy'],
+    keywords: ['security', 'cybersecurity', 'encryption', 'authentication', 'firewall', 'vulnerability', 'threat', 'compliance', 'gdpr', 'privacy', 'budget', 'risk'],
     category: 'Security',
     alt: 'Cybersecurity and Data Protection'
   },
@@ -38,7 +38,7 @@ export const BLOG_IMAGES: BlogImage[] = [
   },
   {
     filename: 'blog-project-management.jpg',
-    keywords: ['project', 'management', 'agile', 'scrum', 'kanban', 'leadership', 'team', 'collaboration', 'planning', 'strategy'],
+    keywords: ['project', 'management', 'agile', 'scrum', 'kanban', 'leadership', 'team', 'collaboration', 'planning', 'strategy', 'service management', 'ways of working', 'standards'],
     category: 'Management',
     alt: 'Project Management and Leadership'
   },
@@ -56,7 +56,7 @@ export const BLOG_IMAGES: BlogImage[] = [
   },
   {
     filename: 'blog-business-strategy.jpg',
-    keywords: ['business', 'strategy', 'organization', 'process', 'efficiency', 'optimization', 'cost', 'value', 'roi', 'goals'],
+    keywords: ['business', 'strategy', 'organization', 'process', 'efficiency', 'optimization', 'cost', 'value', 'roi', 'goals', 'mobile', 'innovation'],
     category: 'Business',
     alt: 'Business Strategy and Optimization'
   },

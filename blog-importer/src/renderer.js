@@ -30,6 +30,7 @@ if (!window.MaterialUI) {
     'business', 'strategy', 'organization', 'process',
     'team', 'collaboration', 'communication',
     'transformation', 'digital', 'innovation', 'change',
+    'service management', 'ways of working', 'standards',
     
     // Quality & Performance
     'testing', 'qa', 'quality', 'assurance',
@@ -45,7 +46,10 @@ if (!window.MaterialUI) {
     'supply chain', 'logistics', 'inventory',
     'crm', 'customer', 'relationship', 'sales',
     'compliance', 'governance', 'regulation',
-    'knowledge', 'documentation', 'learning'
+    'knowledge', 'documentation', 'learning',
+    
+    // Additional keywords from existing posts
+    'mobile', 'budget', 'risk'
   ];
 
   function parseSummaryMarkdown(md) {
