@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   try {
-    const resumePath = path.join(process.cwd(), '..', 'Karl Sorochinski - Resume.md')
+    const resumePath = path.join(process.cwd(), 'Karl Sorochinski - Resume.md')
     
     if (!fs.existsSync(resumePath)) {
       return res.status(404).json({ error: 'Resume file not found' })

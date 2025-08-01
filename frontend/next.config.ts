@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       {
         source: '/api/:path*',
         destination: process.env.NODE_ENV === 'production' 
-          ? 'https://ks-personal-website-backend.azurewebsites.net/api/:path*'
+          ? 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/:path*'
           : 'http://localhost:3001/api/:path*',
       },
     ];
