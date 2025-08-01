@@ -21,15 +21,14 @@ Your Subtitle Here
 ### Summary Body:
 Your summary content here...
 
-### Keywords:
-keyword1, keyword2, keyword3
-
 ### UPDATE:
 Optional update content...
 
 ### 2025 UPDATE:
 Optional 2025 update content...
 ```
+
+**Note**: Keywords are now selected through the blog importer interface rather than being written in the markdown file. This ensures perfect matches with the available image categories.
 
 ## Keywords Guidelines
 
@@ -84,10 +83,9 @@ A practical guide to deploying ML models
 
 ### Summary Body:
 This post explores the challenges and best practices...
-
-### Keywords:
-ai, machine learning, production, deployment
 ```
+
+**Keywords to select in importer**: `ai`, `machine learning`, `development`
 
 ### Example 2: Security Post
 ```markdown
@@ -102,10 +100,9 @@ Protecting your organization in the digital age
 
 ### Summary Body:
 Learn about the latest security threats and how to defend against them...
-
-### Keywords:
-security, cybersecurity, threats, protection
 ```
+
+**Keywords to select in importer**: `security`, `cybersecurity`, `authentication`
 
 ### Example 3: Cloud Computing Post
 ```markdown
@@ -120,16 +117,22 @@ Real-world experiences from a cloud migration
 
 ### Summary Body:
 Our journey from on-premises to AWS and the challenges we faced...
-
-### Keywords:
-cloud, aws, migration, infrastructure
 ```
+
+**Keywords to select in importer**: `cloud`, `aws`, `devops`, `infrastructure`
 
 ## Image Selection Logic
 
-1. **Primary**: If keywords are provided, the system matches them against image categories
-2. **Fallback**: If no keywords match or no keywords provided, it analyzes the post title and content
+1. **Primary**: Keywords selected in the importer are matched against image categories
+2. **Fallback**: If no keywords match, it analyzes the post title and content
 3. **Random**: If no matches found, it selects a random image for variety
+
+## Using the Blog Importer
+
+1. **Select Files**: Choose your summary and detail markdown files
+2. **Choose Keywords**: Select up to 5 keywords from the available options that best describe your post
+3. **Preview**: Review the parsed content and selected keywords
+4. **Import**: Approve and import the blog post with the selected keywords
 
 ## Benefits
 
