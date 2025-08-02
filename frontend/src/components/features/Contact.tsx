@@ -66,7 +66,7 @@ export default function Contact() {
       try {
         const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' 
           ? 'http://localhost:3001/api/csrf-token'
-          : 'https://ks-personal-website-apim.azure-api.net/personal-website-api/api/csrf-token';
+          : 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/csrf-token';
         
         const response = await fetch(apiUrl, {
           credentials: 'include' // Important for CSRF cookies
@@ -134,7 +134,7 @@ export default function Contact() {
     try {
       const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' 
         ? 'http://localhost:3001/api/contact'
-        : 'https://ks-personal-website-apim.azure-api.net/personal-website-api/api/contact';
+        : 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/contact';
       
       const response = await fetch(apiUrl, {
         method: 'POST',
