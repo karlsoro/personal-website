@@ -1,7 +1,7 @@
 'use client'
 
 import { Box, Container, Heading, Text, Link, Flex, Button } from '@chakra-ui/react'
-import { ArrowBackIcon, DownloadIcon } from '@chakra-ui/icons'
+import { DownloadIcon } from '@chakra-ui/icons'
 import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { generatePDFFromMarkdown } from '@/services/pdfService'
