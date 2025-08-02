@@ -57,30 +57,7 @@ export default function Contact() {
   })
   const [errors, setErrors] = useState<{[key: string]: string}>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [csrfToken, setCsrfToken] = useState<string>('')
   const toast = useToast()
-
-  // Fetch CSRF token on component mount
-  useEffect(() => {
-    const fetchCsrfToken = async () => {
-      try {
-        const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' 
-          ? 'http://localhost:3001/api/csrf-token'
-          : 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io/api/csrf-token';
-        
-        const response = await fetch(apiUrl, {
-          credentials: 'include' // Important for CSRF cookies
-        })
-        if (response.ok) {
-          const data = await response.json()
-          setCsrfToken(data.csrfToken)
-        }
-      } catch (error) {
-        console.error('Failed to fetch CSRF token:', error)
-      }
-    }
-    fetchCsrfToken()
-  }, [])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -140,9 +117,7 @@ export default function Contact() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-csrf-token': csrfToken,
         },
-        credentials: 'include', // Important for CSRF cookies
         body: JSON.stringify(formData),
       })
       
