@@ -244,4 +244,58 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Temporary route to update keywords
+router.post('/fix-keywords', async (req, res) => {
+  try {
+    console.log('[BLOG] HIT POST /fix-keywords endpoint');
+    
+    const updates = [
+      {
+        id: "6881776e433921628f0c6710",
+        title: "Mobile First, Desktop Later",
+        keywords: ["mobile", "strategy", "innovation"]
+      },
+      {
+        id: "68814f0a10ef638d205f3eae",
+        title: "BYOD Isn't a Perk—It's a Policy Crisis", 
+        keywords: ["security", "budget", "risk"]
+      },
+      {
+        id: "68817752433921628f0c670e",
+        title: "ITIL Is Getting in the Way",
+        keywords: ["service management", "ways of working", "standards"]
+      }
+    ];
+    
+    const results: string[] = [];
+    
+    for (const update of updates) {
+      const result = await BlogPost.findByIdAndUpdate(
+        update.id,
+        { $set: { keywords: update.keywords } },
+        { new: true }
+      );
+      
+      if (result) {
+        results.push(`✅ Updated "${update.title}" with keywords: [${update.keywords.join(', ')}]`);
+      } else {
+        results.push(`❌ Post not found: "${update.title}" (ID: ${update.id})`);
+      }
+    }
+    
+    return res.json({
+      success: true,
+      message: 'Keyword updates completed',
+      results: results
+    });
+    
+  } catch (error) {
+    console.error('Update keywords error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to update keywords: ' + (error instanceof Error ? error.message : 'Unknown error')
+    });
+  }
+});
+
 export default router
