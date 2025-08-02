@@ -35,13 +35,23 @@ interface GroupedPosts {
 export default function Blog({ posts }: { posts: BlogPost[] }) {
   // Group posts by year
   const groupedPosts: GroupedPosts = posts.reduce((groups, post) => {
-    // Extract year from the date field (format: "YYYY Month" or "YYYY-MM-DD")
+    // Extract year from the date field (format: "YYYY Month" or "Month YYYY")
     let year: string;
     
     try {
       if (post.date && post.date.includes(' ')) {
-        // Format: "2012 March" - extract the year
-        year = post.date.split(' ')[0];
+        const parts = post.date.split(' ');
+        // Check if first part is a year (4 digits)
+        if (/^\d{4}$/.test(parts[0])) {
+          // Format: "2012 March" - extract the year
+          year = parts[0];
+        } else if (/^\d{4}$/.test(parts[1])) {
+          // Format: "May 2012" - extract the year
+          year = parts[1];
+        } else {
+          // Try to parse as a date
+          year = new Date(post.date).getFullYear().toString();
+        }
       } else if (post.date) {
         // Format: "YYYY-MM-DD" or other ISO format
         year = new Date(post.date).getFullYear().toString();

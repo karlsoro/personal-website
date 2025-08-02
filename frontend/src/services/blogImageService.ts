@@ -7,123 +7,123 @@ export interface BlogImage {
 
 export const BLOG_IMAGES: BlogImage[] = [
   {
-    filename: 'blog-ai-ml.jpg',
+    filename: 'blog-ai-ml.svg',
     keywords: ['ai', 'artificial intelligence', 'machine learning', 'ml', 'neural network', 'deep learning', 'algorithm', 'predictive', 'automation'],
-    category: 'AI/ML',
+    category: 'Technology',
     alt: 'Artificial Intelligence and Machine Learning'
   },
   {
-    filename: 'blog-cloud-computing.jpg',
+    filename: 'blog-cloud-computing.svg',
     keywords: ['cloud', 'aws', 'azure', 'gcp', 'kubernetes', 'docker', 'microservices', 'serverless', 'infrastructure', 'devops'],
-    category: 'Cloud/DevOps',
+    category: 'Technology',
     alt: 'Cloud Computing and DevOps'
   },
   {
-    filename: 'blog-data-analytics.jpg',
+    filename: 'blog-data-analytics.svg',
     keywords: ['data', 'analytics', 'big data', 'database', 'sql', 'nosql', 'mongodb', 'snowflake', 'databricks', 'bi', 'business intelligence'],
-    category: 'Data/Analytics',
+    category: 'Data',
     alt: 'Data Analytics and Business Intelligence'
   },
   {
-    filename: 'blog-cybersecurity.jpg',
+    filename: 'blog-cybersecurity.svg',
     keywords: ['security', 'cybersecurity', 'encryption', 'authentication', 'firewall', 'vulnerability', 'threat', 'compliance', 'gdpr', 'privacy', 'budget', 'risk'],
     category: 'Security',
     alt: 'Cybersecurity and Data Protection'
   },
   {
-    filename: 'blog-software-development.jpg',
+    filename: 'blog-software-development.svg',
     keywords: ['development', 'programming', 'coding', 'software', 'application', 'api', 'web', 'mobile', 'frontend', 'backend', 'fullstack'],
-    category: 'Development',
+    category: 'Technology',
     alt: 'Software Development and Programming'
   },
   {
-    filename: 'blog-project-management.jpg',
+    filename: 'blog-project-management.svg',
     keywords: ['project', 'management', 'agile', 'scrum', 'kanban', 'leadership', 'team', 'collaboration', 'planning', 'strategy', 'service management', 'ways of working', 'standards'],
     category: 'Management',
     alt: 'Project Management and Leadership'
   },
   {
-    filename: 'blog-enterprise-architecture.jpg',
+    filename: 'blog-enterprise-architecture.svg',
     keywords: ['architecture', 'enterprise', 'system design', 'integration', 'soa', 'microservices', 'legacy', 'modernization', 'transformation'],
-    category: 'Architecture',
+    category: 'Technology',
     alt: 'Enterprise Architecture and System Design'
   },
   {
-    filename: 'blog-digital-transformation.jpg',
+    filename: 'blog-digital-transformation.svg',
     keywords: ['transformation', 'digital', 'innovation', 'change', 'modernization', 'migration', 'upgrade', 'evolution', 'future'],
-    category: 'Transformation',
+    category: 'Business',
     alt: 'Digital Transformation and Innovation'
   },
   {
-    filename: 'blog-business-strategy.jpg',
+    filename: 'blog-business-strategy.svg',
     keywords: ['business', 'strategy', 'organization', 'process', 'efficiency', 'optimization', 'cost', 'value', 'roi', 'goals', 'mobile', 'innovation'],
     category: 'Business',
     alt: 'Business Strategy and Optimization'
   },
   {
-    filename: 'blog-technology-trends.jpg',
+    filename: 'blog-technology-trends.svg',
     keywords: ['trends', 'technology', 'future', 'emerging', 'innovation', 'disruption', 'next-gen', 'cutting-edge', 'advancement'],
-    category: 'Trends',
+    category: 'Technology',
     alt: 'Technology Trends and Innovation'
   },
   {
-    filename: 'blog-team-collaboration.jpg',
+    filename: 'blog-team-collaboration.svg',
     keywords: ['team', 'collaboration', 'communication', 'culture', 'workplace', 'remote', 'hybrid', 'productivity', 'engagement'],
-    category: 'Collaboration',
+    category: 'Business',
     alt: 'Team Collaboration and Communication'
   },
   {
-    filename: 'blog-quality-assurance.jpg',
+    filename: 'blog-quality-assurance.svg',
     keywords: ['testing', 'qa', 'quality', 'assurance', 'automation', 'ci/cd', 'pipeline', 'deployment', 'monitoring', 'performance'],
     category: 'Quality',
     alt: 'Quality Assurance and Testing'
   },
   {
-    filename: 'blog-user-experience.jpg',
+    filename: 'blog-user-experience.svg',
     keywords: ['ux', 'ui', 'user experience', 'design', 'interface', 'usability', 'accessibility', 'customer', 'user-centered'],
-    category: 'UX/UI',
+    category: 'UX',
     alt: 'User Experience and Interface Design'
   },
   {
-    filename: 'blog-financial-technology.jpg',
+    filename: 'blog-financial-technology.svg',
     keywords: ['fintech', 'financial', 'banking', 'payment', 'blockchain', 'cryptocurrency', 'investment', 'trading', 'risk'],
-    category: 'FinTech',
+    category: 'Industry',
     alt: 'Financial Technology and Banking'
   },
   {
-    filename: 'blog-healthcare-technology.jpg',
+    filename: 'blog-healthcare-technology.svg',
     keywords: ['healthcare', 'medical', 'pharma', 'clinical', 'patient', 'health', 'wellness', 'biotech', 'research'],
-    category: 'Healthcare',
+    category: 'Industry',
     alt: 'Healthcare Technology and Medical Innovation'
   },
   {
-    filename: 'blog-supply-chain.jpg',
+    filename: 'blog-supply-chain.svg',
     keywords: ['supply chain', 'logistics', 'inventory', 'warehouse', 'distribution', 'procurement', 'vendor', 'sourcing'],
-    category: 'Supply Chain',
+    category: 'Industry',
     alt: 'Supply Chain and Logistics'
   },
   {
-    filename: 'blog-customer-relationship.jpg',
+    filename: 'blog-customer-relationship.svg',
     keywords: ['crm', 'customer', 'relationship', 'sales', 'marketing', 'service', 'support', 'engagement', 'loyalty'],
-    category: 'CRM',
+    category: 'Industry',
     alt: 'Customer Relationship Management'
   },
   {
-    filename: 'blog-compliance-governance.jpg',
+    filename: 'blog-compliance-governance.svg',
     keywords: ['compliance', 'governance', 'regulation', 'policy', 'audit', 'risk', 'legal', 'standards', 'framework'],
-    category: 'Compliance',
+    category: 'Industry',
     alt: 'Compliance and Governance'
   },
   {
-    filename: 'blog-performance-optimization.jpg',
+    filename: 'blog-performance-optimization.svg',
     keywords: ['performance', 'optimization', 'speed', 'efficiency', 'scalability', 'load', 'capacity', 'throughput', 'latency'],
-    category: 'Performance',
+    category: 'Quality',
     alt: 'Performance Optimization and Scalability'
   },
   {
-    filename: 'blog-knowledge-management.jpg',
+    filename: 'blog-knowledge-management.svg',
     keywords: ['knowledge', 'documentation', 'learning', 'training', 'education', 'content', 'information', 'wisdom', 'expertise'],
-    category: 'Knowledge',
+    category: 'Industry',
     alt: 'Knowledge Management and Learning'
   }
 ]
@@ -167,5 +167,5 @@ export const getBlogImage = (postContent: string, postTitle: string = '', postKe
 
 export const getBlogImageUrl = (image: BlogImage): string => {
   // Use the actual SVG image files
-  return `/blog-images/${image.filename.replace('.jpg', '.svg')}`
+  return `/blog-images/${image.filename}`
 } 
