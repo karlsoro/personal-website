@@ -37,7 +37,7 @@ export default function CookiePolicy() {
         author: 'Karl Sorochinski',
         subject: 'Cookies Policy'
       })
-    } catch (error) {
+    } catch {
       // console.error('Error generating PDF:', error)
     } finally {
       setIsGenerating(false)

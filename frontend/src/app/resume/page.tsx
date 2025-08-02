@@ -31,7 +31,7 @@ export default function ResumePage() {
         setError(null)
         const data = await getResumeContent()
         setResumeData(data)
-      } catch (err) {
+      } catch {
         setError('Failed to load resume content')
         // console.error('Error fetching resume:', err)
       } finally {
@@ -55,7 +55,7 @@ export default function ResumePage() {
         author: 'Karl Sorochinski',
         subject: 'Professional Resume'
       })
-    } catch (error) {
+    } catch {
       // console.error('Error generating PDF:', error)
       // You could add a toast notification here for better UX
     } finally {

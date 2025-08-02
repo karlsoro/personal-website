@@ -37,7 +37,7 @@ export default function TermsOfUse() {
         author: 'Karl Sorochinski',
         subject: 'Terms of Use'
       })
-    } catch (error) {
+    } catch {
       // console.error('Error generating PDF:', error)
     } finally {
       setIsGenerating(false)

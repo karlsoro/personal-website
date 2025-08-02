@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
         author: 'Karl Sorochinski',
         subject: 'Privacy Policy'
       })
-    } catch (error) {
+    } catch {
       // console.error('Error generating PDF:', error)
     } finally {
       setIsGenerating(false)

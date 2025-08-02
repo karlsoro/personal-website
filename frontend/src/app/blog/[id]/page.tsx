@@ -33,7 +33,7 @@ async function getBlogPost(id: string): Promise<BlogPost | null> {
     
     const data = await res.json();
     return data.data || null;
-  } catch (error) {
+  } catch {
     // console.error('Error fetching blog post:', error);
     return null;
   }

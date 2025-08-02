@@ -53,7 +53,7 @@ export default function AIStatementPage() {
         author: 'Karl Sorochinski',
         subject: 'AI Statement'
       })
-    } catch (error) {
+    } catch {
       // console.error('Error generating PDF:', error)
     } finally {
       setIsGenerating(false)

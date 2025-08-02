@@ -62,7 +62,7 @@ ${post.detail}
         subject: 'Blog Post',
         filename: `${safeTitle}-${dateString}.pdf`
       });
-    } catch (error) {
+    } catch {
       // console.error('Error generating PDF:', error);
     } finally {
       setIsGenerating(false);
