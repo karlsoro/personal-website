@@ -129,31 +129,43 @@ export const BLOG_IMAGES: BlogImage[] = [
 ]
 
 export const getBlogImage = (postContent: string, postTitle: string = '', postKeywords: string[] = []): BlogImage => {
+  // Debug logging
+  console.log(`🔍 Selecting image for: "${postTitle}"`)
+  console.log(`   Keywords: [${postKeywords.join(', ')}]`)
+  
   // If we have keywords from the database, use those for matching
   if (postKeywords && postKeywords.length > 0) {
     const searchText = postKeywords.join(' ').toLowerCase()
+    console.log(`   Using keywords for matching: "${searchText}"`)
     
     // Find images that match the keywords
     const matchingImages = BLOG_IMAGES.filter(image => 
       image.keywords.some(keyword => searchText.includes(keyword.toLowerCase()))
     )
     
+    console.log(`   Found ${matchingImages.length} keyword matches`)
+    
     // If we have matches, return the first one (deterministic)
     if (matchingImages.length > 0) {
+      console.log(`   ✅ Selected: ${matchingImages[0].filename}`)
       return matchingImages[0]
     }
   }
   
   // Fallback to content analysis if no keywords or no matches
   const searchText = `${postTitle} ${postContent}`.toLowerCase()
+  console.log(`   Using content analysis: "${searchText.substring(0, 100)}..."`)
   
   // Find images that match the content
   const matchingImages = BLOG_IMAGES.filter(image => 
     image.keywords.some(keyword => searchText.includes(keyword.toLowerCase()))
   )
   
+  console.log(`   Found ${matchingImages.length} content matches`)
+  
   // If we have matches, return the first one (deterministic)
   if (matchingImages.length > 0) {
+    console.log(`   ✅ Selected: ${matchingImages[0].filename}`)
     return matchingImages[0]
   }
   
@@ -162,6 +174,7 @@ export const getBlogImage = (postContent: string, postTitle: string = '', postKe
     return ((hash << 5) - hash + char.charCodeAt(0)) & 0xffffffff
   }, 0)
   const index = Math.abs(titleHash) % BLOG_IMAGES.length
+  console.log(`   🎲 Using hash fallback: ${BLOG_IMAGES[index].filename}`)
   return BLOG_IMAGES[index]
 }
 
