@@ -3,8 +3,8 @@
   <!-- Background -->
   <defs>
     <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#E53E3E;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#E53E3E;stop-opacity:0.8" />
+      <stop offset="0%" style="stop-color:#00FF00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00CC00;stop-opacity:0.8" />
     </linearGradient>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
@@ -15,33 +15,33 @@
   <rect width="1200" height="800" fill="url(#grad1)"/>
   
   <!-- Decorative elements -->
-  <circle cx="100" cy="100" r="50" fill="#E2E8F0" opacity="0.1"/>
-  <circle cx="1100" cy="700" r="80" fill="#E2E8F0" opacity="0.1"/>
-  <rect x="1000" y="50" width="150" height="150" fill="#E2E8F0" opacity="0.1" rx="10"/>
+  <circle cx="100" cy="100" r="50" fill="#FFFFFF" opacity="0.2"/>
+  <circle cx="1100" cy="700" r="80" fill="#FFFFFF" opacity="0.2"/>
+  <rect x="1000" y="50" width="150" height="150" fill="#FFFFFF" opacity="0.2" rx="10"/>
   
   <!-- Main title -->
   <text x="600" y="320" font-family="Arial, sans-serif" font-size="48" font-weight="bold" 
-        text-anchor="middle" fill="#FFFFFF" filter="url(#shadow)">
-    Cybersecurity
+        text-anchor="middle" fill="#000000" filter="url(#shadow)">
+    TEST IMAGE
   </text>
   
   <!-- Subtitle -->
   <text x="600" y="380" font-family="Arial, sans-serif" font-size="24" 
-        text-anchor="middle" fill="#FFFFFF" opacity="0.9">
-    Data Protection & Security
+        text-anchor="middle" fill="#000000" opacity="0.8">
+    CACHE TEST - BRIGHT GREEN
   </text>
   
   <!-- Category badge -->
-  <rect x="500" y="420" width="200" height="40" fill="#E2E8F0" opacity="0.2" rx="20"/>
+  <rect x="500" y="420" width="200" height="40" fill="#FFFFFF" opacity="0.3" rx="20"/>
   <text x="600" y="445" font-family="Arial, sans-serif" font-size="16" font-weight="bold"
-        text-anchor="middle" fill="#FFFFFF">
-    Security
+        text-anchor="middle" fill="#000000">
+    TEST
   </text>
   
   <!-- Decorative lines -->
-  <line x1="200" y1="500" x2="400" y2="500" stroke="#E2E8F0" stroke-width="2" opacity="0.3"/>
-  <line x1="800" y1="500" x2="1000" y2="500" stroke="#E2E8F0" stroke-width="2" opacity="0.3"/>
+  <line x1="200" y1="500" x2="400" y2="500" stroke="#FFFFFF" stroke-width="2" opacity="0.4"/>
+  <line x1="800" y1="500" x2="1000" y2="500" stroke="#FFFFFF" stroke-width="2" opacity="0.4"/>
   
   <!-- Corner accent -->
-  <polygon points="0,0 100,0 0,100" fill="#E2E8F0" opacity="0.2"/>
+  <polygon points="0,0 100,0 0,100" fill="#FFFFFF" opacity="0.3"/>
 </svg>
