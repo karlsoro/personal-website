@@ -19,7 +19,7 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react'
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 interface ContactInfo {
   icon: React.ElementType
