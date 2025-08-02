@@ -11,15 +11,14 @@ import {
   AlertIcon,
   Spinner,
 } from '@chakra-ui/react'
-import { ArrowBackIcon, DownloadIcon } from '@chakra-ui/icons'
-import { useRouter } from 'next/navigation'
+import { DownloadIcon } from '@chakra-ui/icons'
 import { useState, useEffect } from 'react'
 import { getResumeContent, ResumeContent } from '@/services/resumeService'
 import { generatePDFFromMarkdown } from '@/services/pdfService'
 import MarkdownRenderer from '@/components/shared/MarkdownRenderer'
+import Header from '@/components/layout/Header'
 
 export default function ResumePage() {
-  const router = useRouter()
   const [isGenerating, setIsGenerating] = useState(false)
   const [resumeData, setResumeData] = useState<ResumeContent | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -43,10 +42,6 @@ export default function ResumePage() {
     fetchResume()
   }, [])
 
-  const handleHomeClick = () => {
-    router.push('/')
-  }
-
   const handleDownloadClick = async () => {
     if (!resumeData) {
       console.error('No resume data available')
@@ -69,26 +64,20 @@ export default function ResumePage() {
   }
 
   return (
-    <Container maxW="container.lg" py={8}>
-      <Flex justify="space-between" align="center" mb={8}>
-        <Button
-          leftIcon={<ArrowBackIcon />}
-          onClick={handleHomeClick}
-          variant="outline"
-          colorScheme="blue"
-        >
-          Home
-        </Button>
-        <Button
-          rightIcon={<DownloadIcon />}
-          onClick={handleDownloadClick}
-          colorScheme="blue"
-          isLoading={isGenerating}
-          loadingText="Generating PDF..."
-        >
-          Download
-        </Button>
-      </Flex>
+    <>
+      <Header />
+      <Container maxW="container.lg" py={8}>
+        <Flex justify="flex-end" mb={8}>
+          <Button
+            rightIcon={<DownloadIcon />}
+            onClick={handleDownloadClick}
+            colorScheme="blue"
+            isLoading={isGenerating}
+            loadingText="Generating PDF..."
+          >
+            Download
+          </Button>
+        </Flex>
 
       <Box
         bg="white"
@@ -124,5 +113,6 @@ export default function ResumePage() {
         </VStack>
       </Box>
     </Container>
+    </>
   )
 } 

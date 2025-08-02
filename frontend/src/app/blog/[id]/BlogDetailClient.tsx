@@ -46,10 +46,21 @@ ${post.update2025 ? `**Update 2025:** ${post.update2025}` : ''}
 ${post.detail}
 `;
 
+      // Create a filename-safe version of the title
+      const safeTitle = post.title
+        .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .toLowerCase();
+      
+      // Format the date
+      const postDate = new Date(post.date);
+      const dateString = postDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+      
       await generatePDFFromMarkdown(markdownContent, {
         title: `${post.title} - Karl Sorochinski`,
         author: 'Karl Sorochinski',
-        subject: 'Blog Post'
+        subject: 'Blog Post',
+        filename: `${safeTitle}-${dateString}.pdf`
       });
     } catch (error) {
       console.error('Error generating PDF:', error);
