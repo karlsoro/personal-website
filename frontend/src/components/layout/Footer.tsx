@@ -40,6 +40,9 @@ export default function Footer() {
           <Link href="/cookies" _hover={{ textDecoration: 'underline' }}>
             Cookies Policy
           </Link>
+          <Link href="/ai-statement" _hover={{ textDecoration: 'underline' }}>
+            AI Statement
+          </Link>
           
           <Stack direction={'row'} spacing={2} ml={4}>
             <IconButton
