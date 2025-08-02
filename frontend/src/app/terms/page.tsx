@@ -26,7 +26,7 @@ export default function TermsOfUse() {
 
   const handleDownloadClick = async () => {
     if (!content) {
-      console.error('No content available')
+      // console.error('No content available')
       return
     }
 
@@ -38,7 +38,7 @@ export default function TermsOfUse() {
         subject: 'Terms of Use'
       })
     } catch (error) {
-      console.error('Error generating PDF:', error)
+      // console.error('Error generating PDF:', error)
     } finally {
       setIsGenerating(false)
     }

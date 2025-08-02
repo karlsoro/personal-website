@@ -26,7 +26,7 @@ export default function PrivacyPolicy() {
 
   const handleDownloadClick = async () => {
     if (!content) {
-      console.error('No content available')
+      // console.error('No content available')
       return
     }
 
@@ -38,7 +38,7 @@ export default function PrivacyPolicy() {
         subject: 'Privacy Policy'
       })
     } catch (error) {
-      console.error('Error generating PDF:', error)
+      // console.error('Error generating PDF:', error)
     } finally {
       setIsGenerating(false)
     }

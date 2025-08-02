@@ -33,7 +33,7 @@ export default function ResumePage() {
         setResumeData(data)
       } catch (err) {
         setError('Failed to load resume content')
-        console.error('Error fetching resume:', err)
+        // console.error('Error fetching resume:', err)
       } finally {
         setIsLoading(false)
       }
@@ -44,7 +44,7 @@ export default function ResumePage() {
 
   const handleDownloadClick = async () => {
     if (!resumeData) {
-      console.error('No resume data available')
+      // console.error('No resume data available')
       return
     }
 
@@ -56,7 +56,7 @@ export default function ResumePage() {
         subject: 'Professional Resume'
       })
     } catch (error) {
-      console.error('Error generating PDF:', error)
+      // console.error('Error generating PDF:', error)
       // You could add a toast notification here for better UX
     } finally {
       setIsGenerating(false)

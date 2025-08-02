@@ -46,7 +46,7 @@ export function useApiClient({ endpoint, options = {} }: ApiClientProps): ApiCli
         const result = await response.json();
         setData(result);
       } catch (err) {
-        console.error('API Client Error:', err);
+        // console.error('API Client Error:', err);
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
         setLoading(false);

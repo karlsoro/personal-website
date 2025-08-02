@@ -54,7 +54,7 @@ export default function AIStatementPage() {
         subject: 'AI Statement'
       })
     } catch (error) {
-      console.error('Error generating PDF:', error)
+      // console.error('Error generating PDF:', error)
     } finally {
       setIsGenerating(false)
     }
