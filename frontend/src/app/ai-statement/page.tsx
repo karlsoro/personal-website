@@ -4,12 +4,15 @@ import {
   Box,
   Button,
   Container,
+  Flex,
   VStack,
 } from '@chakra-ui/react'
-import { ArrowBackIcon } from '@chakra-ui/icons'
+import { ArrowBackIcon, DownloadIcon } from '@chakra-ui/icons'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import MainLayout from '@/components/layout/MainLayout'
 import MarkdownRenderer from '@/components/shared/MarkdownRenderer'
+import { generatePDFFromMarkdown } from '@/services/pdfService'
 
 const aiStatementContent = `# Statement on Use of AI
 
@@ -36,15 +39,31 @@ If you have questions, suggestions, or concerns about any content on this site, 
 
 export default function AIStatementPage() {
   const router = useRouter()
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const handleHomeClick = () => {
     router.push('/')
   }
 
+  const handleDownloadClick = async () => {
+    setIsGenerating(true)
+    try {
+      await generatePDFFromMarkdown(aiStatementContent, {
+        title: 'AI Statement - Karl Sorochinski',
+        author: 'Karl Sorochinski',
+        subject: 'AI Statement'
+      })
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
   return (
     <MainLayout>
       <Container maxW="container.lg" py={8}>
-        <Box mb={8}>
+        <Flex justify="space-between" align="center" mb={8}>
           <Button
             leftIcon={<ArrowBackIcon />}
             onClick={handleHomeClick}
@@ -53,7 +72,16 @@ export default function AIStatementPage() {
           >
             Back to Home
           </Button>
-        </Box>
+          <Button
+            rightIcon={<DownloadIcon />}
+            onClick={handleDownloadClick}
+            colorScheme="blue"
+            isLoading={isGenerating}
+            loadingText="Generating PDF..."
+          >
+            Download
+          </Button>
+        </Flex>
 
         <Box
           bg="white"

@@ -15,6 +15,7 @@ import resumeRoutes from './routes/resume'
 import { errorHandler } from './middleware/errorHandler'
 import { notFound } from './middleware/notFound'
 import { httpsRedirect } from './middleware/httpsRedirect'
+import { getCsrfToken } from './middleware/csrf'
 
 const app = express()
 
@@ -85,6 +86,9 @@ app.use('/api/blog', limiter)
 // } else {
 //   app.use(morgan('combined'))
 // }
+
+// CSRF token endpoint
+app.get('/api/csrf-token', getCsrfToken)
 
 // API routes
 app.use('/api/contact', contactRoutes)

@@ -1,8 +1,6 @@
-import { Box, Container, Heading, Text, VStack, Flex, Button } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 import Header from '@/components/layout/Header';
-import Link from 'next/link';
-import MarkdownClient from './MarkdownClient';
+import BlogDetailClient from './BlogDetailClient';
 
 interface BlogPost {
   _id: string;
@@ -48,42 +46,9 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
   if (!post) return notFound();
 
   return (
-    <Box py={0} bg="gray.50" minH="100vh">
+    <>
       <Header />
-      <Container maxW={'4xl'} pt={10}>
-        {/* Back to posts navigation */}
-        <Flex mb={6}>
-          <Link href="/blog">
-            <Button variant="outline" colorScheme="blue">← Back to Blog Posts</Button>
-          </Link>
-        </Flex>
-        
-        <Heading as="h1" size="2xl" mb={4}>{post.title}</Heading>
-        
-        <VStack align="start" spacing={6}>
-          <Box>
-            <Text fontWeight="bold">Summary:</Text>
-            <Text>{post.summaryBody}</Text>
-          </Box>
-          
-          {post.update && (
-            <Box>
-              <Text fontWeight="bold">Update:</Text>
-              <Text>{post.update}</Text>
-            </Box>
-          )}
-          
-          {post.update2025 && (
-            <Box>
-              <Text fontWeight="bold">Update 2025:</Text>
-              <Text>{post.update2025}</Text>
-            </Box>
-          )}
-          
-          {/* Render markdown detail using client component */}
-          <MarkdownClient content={post.detail} />
-        </VStack>
-      </Container>
-    </Box>
+      <BlogDetailClient post={post} />
+    </>
   );
 } 

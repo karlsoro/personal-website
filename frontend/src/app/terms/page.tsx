@@ -1,12 +1,15 @@
 'use client'
 
-import { Box, Container, Heading, Text, Link } from '@chakra-ui/react'
+import { Box, Container, Heading, Text, Link, Flex, Button } from '@chakra-ui/react'
+import { ArrowBackIcon, DownloadIcon } from '@chakra-ui/icons'
 import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
+import { generatePDFFromMarkdown } from '@/services/pdfService'
 
 export default function TermsOfUse() {
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(true)
+  const [isGenerating, setIsGenerating] = useState(false)
 
   useEffect(() => {
     fetch('/TermsofUse.md')
@@ -21,6 +24,26 @@ export default function TermsOfUse() {
       })
   }, [])
 
+  const handleDownloadClick = async () => {
+    if (!content) {
+      console.error('No content available')
+      return
+    }
+
+    setIsGenerating(true)
+    try {
+      await generatePDFFromMarkdown(content, {
+        title: 'Terms of Use - Karl Sorochinski',
+        author: 'Karl Sorochinski',
+        subject: 'Terms of Use'
+      })
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
   if (loading) {
     return (
       <Box py={20}>
@@ -34,9 +57,20 @@ export default function TermsOfUse() {
   return (
     <Box py={20}>
       <Container maxW="4xl">
-        <Link href="/" color="brand.500" mb={8} display="inline-block">
-          ← Back to Home
-        </Link>
+        <Flex justify="space-between" align="center" mb={8}>
+          <Link href="/" color="brand.500" display="inline-block">
+            ← Back to Home
+          </Link>
+          <Button
+            rightIcon={<DownloadIcon />}
+            onClick={handleDownloadClick}
+            colorScheme="blue"
+            isLoading={isGenerating}
+            loadingText="Generating PDF..."
+          >
+            Download
+          </Button>
+        </Flex>
         <Heading mb={8}>Terms of Use</Heading>
         <Box 
           fontFamily="body"
