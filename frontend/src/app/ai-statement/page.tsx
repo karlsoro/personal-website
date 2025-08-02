@@ -1,3 +1,13 @@
+'use client'
+
+import {
+  Box,
+  Button,
+  Container,
+  VStack,
+} from '@chakra-ui/react'
+import { ArrowBackIcon } from '@chakra-ui/icons'
+import { useRouter } from 'next/navigation'
 import MainLayout from '@/components/layout/MainLayout'
 import MarkdownRenderer from '@/components/shared/MarkdownRenderer'
 
@@ -25,13 +35,37 @@ By using this site, you acknowledge that AI assistance may be involved in conten
 If you have questions, suggestions, or concerns about any content on this site, please feel free to contact me at karl@sorochinski.com.`
 
 export default function AIStatementPage() {
+  const router = useRouter()
+
+  const handleHomeClick = () => {
+    router.push('/')
+  }
+
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="prose prose-lg max-w-none">
-          <MarkdownRenderer content={aiStatementContent} />
-        </div>
-      </div>
+      <Container maxW="container.lg" py={8}>
+        <Box mb={8}>
+          <Button
+            leftIcon={<ArrowBackIcon />}
+            onClick={handleHomeClick}
+            variant="outline"
+            colorScheme="blue"
+          >
+            Back to Home
+          </Button>
+        </Box>
+
+        <Box
+          bg="white"
+          p={8}
+          borderRadius="lg"
+          boxShadow="md"
+        >
+          <VStack align="stretch" spacing={6}>
+            <MarkdownRenderer content={aiStatementContent} />
+          </VStack>
+        </Box>
+      </Container>
     </MainLayout>
   )
 } 
