@@ -25,6 +25,32 @@ router.get('/home', async (req, res) => {
   }
 })
 
+// Get single blog post by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const post = await BlogPost.findById(req.params.id)
+    if (!post) {
+      return res.status(404).json({ error: 'Blog post not found' })
+    }
+    res.json({ data: post })
+  } catch (error) {
+    console.error('Error fetching blog post:', error)
+    res.status(500).json({ error: 'Failed to fetch blog post' })
+  }
+})
+
+// Create new blog post
+router.post('/', async (req, res) => {
+  try {
+    const post = new BlogPost(req.body)
+    await post.save()
+    res.status(201).json({ data: post })
+  } catch (error) {
+    console.error('Error creating blog post:', error)
+    res.status(500).json({ error: 'Failed to create blog post' })
+  }
+})
+
 // Temporary endpoint to update keywords
 router.post('/update-keywords', async (req, res) => {
   try {
@@ -69,32 +95,6 @@ router.post('/update-keywords', async (req, res) => {
   } catch (error) {
     console.error('❌ Error updating keywords:', error)
     res.status(500).json({ error: 'Failed to update keywords' })
-  }
-})
-
-// Create new blog post
-router.post('/', async (req, res) => {
-  try {
-    const post = new BlogPost(req.body)
-    await post.save()
-    res.status(201).json({ data: post })
-  } catch (error) {
-    console.error('Error creating blog post:', error)
-    res.status(500).json({ error: 'Failed to create blog post' })
-  }
-})
-
-// Get single blog post by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const post = await BlogPost.findById(req.params.id)
-    if (!post) {
-      return res.status(404).json({ error: 'Blog post not found' })
-    }
-    res.json({ data: post })
-  } catch (error) {
-    console.error('Error fetching blog post:', error)
-    res.status(500).json({ error: 'Failed to fetch blog post' })
   }
 })
 
