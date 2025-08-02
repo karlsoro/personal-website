@@ -138,9 +138,20 @@ export const getBlogImage = (postContent: string, postTitle: string = '', postKe
       image.keywords.some(keyword => searchText.includes(keyword.toLowerCase()))
     )
     
-    // If we have matches, return the first one (deterministic)
+    // If we have matches, return the one with the most keyword matches
     if (matchingImages.length > 0) {
-      return matchingImages[0]
+      // Sort by number of matching keywords (descending)
+      matchingImages.sort((a, b) => {
+        const aMatches = a.keywords.filter(keyword => 
+          searchText.includes(keyword.toLowerCase())
+        ).length;
+        const bMatches = b.keywords.filter(keyword => 
+          searchText.includes(keyword.toLowerCase())
+        ).length;
+        return bMatches - aMatches; // Descending order
+      });
+      
+      return matchingImages[0]; // Return the image with most matches
     }
   }
   
