@@ -141,7 +141,6 @@ export default function Contact() {
         headers: {
           'Content-Type': 'application/json',
           'x-csrf-token': csrfToken,
-          'Ocp-Apim-Subscription-Key': process.env.NEXT_PUBLIC_API_KEY || '',
         },
         credentials: 'include', // Important for CSRF cookies
         body: JSON.stringify(formData),

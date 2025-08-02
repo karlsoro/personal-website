@@ -129,22 +129,17 @@ export const BLOG_IMAGES: BlogImage[] = [
 ]
 
 export const getBlogImage = (postContent: string, postTitle: string = '', postKeywords: string[] = []): BlogImage => {
-  // Temporary debugging
-  console.log('🔍 getBlogImage called with:', { postTitle, postKeywords });
-  
   // If we have keywords from the database, use those for matching
   if (postKeywords && postKeywords.length > 0) {
     const searchText = postKeywords.join(' ').toLowerCase()
-    console.log('🔍 Searching with keywords:', searchText);
     
     // Find images that match the keywords
     const matchingImages = BLOG_IMAGES.filter(image => 
       image.keywords.some(keyword => searchText.includes(keyword.toLowerCase()))
     )
     
-    console.log('🔍 Matching images found:', matchingImages.length);
+    // If we have matches, return the first one (deterministic)
     if (matchingImages.length > 0) {
-      console.log('🔍 Returning:', matchingImages[0].filename);
       return matchingImages[0]
     }
   }

@@ -25,9 +25,9 @@ export function useApiClient({ endpoint, options = {} }: ApiClientProps): ApiCli
         setError(null);
         
         // Determine the base URL based on environment
-                       const baseUrl = process.env.NODE_ENV === 'production'
-                 ? process.env.NEXT_PUBLIC_API_URL || 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io'
-                 : 'http://localhost:3001';
+        const baseUrl = process.env.NODE_ENV === 'production'
+          ? 'https://ks-personal-website-api.grayflower-3fffbb5b.eastus2.azurecontainerapps.io'
+          : 'http://localhost:3001';
         
         const url = `${baseUrl}${endpoint}`;
         
